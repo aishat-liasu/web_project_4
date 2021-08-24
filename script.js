@@ -8,32 +8,23 @@ let profileSubtitle = document.querySelector(".profile__subtitle");
 let popupFieldTitle = document.querySelector(".popup__field_el_title");
 let popupFieldSubtitle = document.querySelector(".popup__field_el_subtitle");
 
-console.log(profileSubtitle.textContent);
-console.log(profileTitle.textContent);
-
-console.log(popupFieldTitle.textContent);
-console.log(popupFieldSubtitle.textContent);
-
 let profileEditButton = document.querySelector(".profile__edit-button");
 
+//shows the popup, then chnages the values of the input fields
+//to value gotten from the page.
 function showPopup() {
   popup.classList.add("popup_opened");
-  console.log(popup.classList);
-  console.log(popupFieldTitle.textContent);
-  console.log(popupFieldSubtitle.textContent);
-  popupFieldSubtitle.value = profileSubtitle.textContent;
   popupFieldTitle.value = profileTitle.textContent;
-  console.log(popupFieldTitle.textContent);
-  console.log(popupFieldSubtitle.textContent);
+  popupFieldSubtitle.value = profileSubtitle.textContent;
 }
 
+//prevents form default action, then closes the popup
 function closePopup(e) {
   e.preventDefault();
-  console.log("Here");
   popup.classList.remove("popup_opened");
-  console.log(popup.classList);
 }
 
+//changes the profile title and subtitle, then closes the popup
 function saveInputs(e) {
   e.preventDefault();
   profileTitle.textContent = popupFieldTitle.value;
