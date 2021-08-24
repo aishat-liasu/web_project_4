@@ -60,6 +60,10 @@
   outline: none;
 }
 
+.popup__field_el_title {
+  color: #000000;
+}
+
 .popup__close-button {
   border: 0;
   padding: 0;
@@ -235,9 +239,16 @@
   right: 15px;
   cursor: pointer;
 }
+
 .place__love-button:hover {
   opacity: 0.5;
 }
+
+.place__love-button:active {
+  opacity: 1;
+  background-image: url("../../images/love-btn_active.png");
+}
+
 .footer {
   padding: 68px 0 60px;
   margin: 0 auto;
