@@ -1,0 +1,11 @@
+.profile__title-edit {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 767px) {
+
+  .profile__title-edit {
+    margin: 0 auto 14px;
+  }
+}

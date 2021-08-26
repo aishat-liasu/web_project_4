@@ -1,0 +1,16 @@
+.logo {
+  background-image: url("../../images/logo_size_l.png");
+  width: 173px;
+  height: 33px;
+  margin-bottom: 41px;
+}
+
+@media screen and (max-width: 1023px) {
+  .logo {
+    background-image: url("../../images/logo_size_s.png");
+    width: 126px;
+    height: 24px;
+    margin-bottom: 0;
+  }
+}
+

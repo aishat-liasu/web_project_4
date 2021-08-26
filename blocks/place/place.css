@@ -1,0 +1,25 @@
+.place {
+  margin: 0;
+  position: relative;
+  background-color: #fff;
+  border-radius: 10px;
+  display: grid;
+  grid-template-areas:
+  "image image"
+  "title love";
+  grid-template-columns: 1fr 40px;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .place {
+    max-width: 282px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+
+  .place {
+    margin: 0 auto 20px;
+    max-width: 282px;
+  }
+}
