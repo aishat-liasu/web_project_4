@@ -6,7 +6,6 @@
   background-color: transparent;
   grid-area: love;
   align-self: center;
-  position: absolute;
   right: 15px;
   cursor: pointer;
 }

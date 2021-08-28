@@ -10,18 +10,22 @@ let popupFieldSubtitle = document.querySelector(".popup__field_el_subtitle");
 
 let profileEditButton = document.querySelector(".profile__edit-button");
 
-//shows the popup, then chnages the values of the input fields
-//to value gotten from the page.
-function showPopup() {
-  popup.classList.add("popup_opened");
+//if popup is hidden, displays it.
+///if popup on display, hids it
+function triggerModal() {
+  popup.classList.toggle("popup_opened");
+}
+
+//changes the values of the input fields to value gotten from the page.
+function fillFields() {
   popupFieldTitle.value = profileTitle.textContent;
   popupFieldSubtitle.value = profileSubtitle.textContent;
 }
 
-//prevents form default action, then closes the popup
-function closePopup(e) {
-  e.preventDefault();
-  popup.classList.remove("popup_opened");
+//shows the popup, then fills the fields
+function showAndFill() {
+  triggerModal();
+  fillFields();
 }
 
 //changes the profile title and subtitle, then closes the popup
@@ -29,9 +33,9 @@ function saveInputs(e) {
   e.preventDefault();
   profileTitle.textContent = popupFieldTitle.value;
   profileSubtitle.textContent = popupFieldSubtitle.value;
-  popup.classList.remove("popup_opened");
+  triggerModal();
 }
 
-profileEditButton.addEventListener("click", showPopup);
-popupCloseButton.addEventListener("click", closePopup);
+profileEditButton.addEventListener("click", showAndFill);
+popupCloseButton.addEventListener("click", triggerModal);
 popupSaveButton.addEventListener("click", saveInputs);

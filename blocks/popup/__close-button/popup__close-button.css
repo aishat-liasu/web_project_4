@@ -1,7 +1,7 @@
 .popup__close-button {
   border: 0;
   padding: 0;
-  background-image: url("../../images/close-icon.png");
+  background-image: url("../../../images/close-icon.png");
   background-color: transparent;
   background-repeat: no-repeat;
   width: 40px;
@@ -18,11 +18,10 @@
 
 @media screen and (max-width: 767px) {
   .popup__close-button {
-    background-image: url("../../images/close-icon_size_s.png");
+    background-image: url("../../../images/close-icon_size_s.png");
     width: 26px;
     height: 26px;
     top: -40px;
     right: 0;
-
   }
 }
