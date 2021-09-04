@@ -13,13 +13,24 @@
 
 <body>
   <div class="page">
-    <section class="popup">
+    <section class="popup popup_type_edit">
       <form class="popup__form">
         <button type="reset" class="popup__close-button" aria-label="close">
         </button>
         <h2 class="popup__heading">Edit Profile</h2>
         <input type="text" name="profile-title" class="popup__field popup__field_el_title">
         <input type="text" name="profile-subtitle" class="popup__field popup__field_el_subtitle">
+        <button type="submit" class="popup__save-button">Save</button>
+      </form>
+    </section>
+    <section class="popup popup_type_add">
+      <form class="popup__form">
+        <button type="reset" class="popup__close-button" aria-label="close">
+        </button>
+        <h2 class="popup__heading">New Place</h2>
+        <input type="text" name="place-title" class="popup__field popup__field_el_place-title" placeholder="Title">
+        <input type="text" name="place-image-url" class="popup__field popup__field_el_place-image-url"
+          placeholder="Image URL">
         <button type="submit" class="popup__save-button">Save</button>
       </form>
     </section>
