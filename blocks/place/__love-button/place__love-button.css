@@ -14,7 +14,3 @@
   opacity: 0.5;
 }
 
-.place__love-button:active {
-  opacity: 1;
-  background-image: url("../../../images/love-btn_active.png");
-}

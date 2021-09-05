@@ -1,3 +1,55 @@
+const initialCards = [
+  {
+    name: "Yosemite Valley",
+    link: "https://code.s3.yandex.net/web-code/yosemite.jpg",
+  },
+  {
+    name: "Lake Louise",
+    link: "https://code.s3.yandex.net/web-code/lake-louise.jpg",
+  },
+  {
+    name: "Bald Mountains",
+    link: "https://code.s3.yandex.net/web-code/bald-mountains.jpg",
+  },
+  {
+    name: "Latemar",
+    link: "https://code.s3.yandex.net/web-code/latemar.jpg",
+  },
+  {
+    name: "Vanoise National Park",
+    link: "https://code.s3.yandex.net/web-code/vanoise.jpg",
+  },
+  {
+    name: "Lago di Braies",
+    link: "https://code.s3.yandex.net/web-code/lago.jpg",
+  },
+];
+
+const placesContainer = document.querySelector(".places");
+const placeTemplate = document.querySelector("#place-template").content;
+
+const cards = initialCards.map((card) => {
+  return prepCard(card);
+});
+
+function prepCard(placeObj) {
+  const place = placeTemplate.querySelector(".place").cloneNode(true);
+  let placeTitle = place.querySelector(".place__title");
+  let placeImage = place.querySelector(".place__image");
+  let placeLikeButton = place.querySelector(".place__love-button");
+
+  placeTitle.textContent = placeObj.name;
+  placeImage.src = placeObj.link;
+  placeImage.alt = placeObj.name + " picture";
+
+  placeLikeButton.addEventListener("click", function () {
+    placeLikeButton.classList.toggle("place__love-button_active");
+  });
+  return place;
+}
+
+placesContainer.prepend(...cards);
+
 let profileEditButton = document.querySelector(".profile__edit-button");
 let popupTypeEdit = document.querySelector(".popup_type_edit");
 let popupTypeEditCloseButton = document.querySelector(
@@ -55,6 +107,16 @@ function saveInputs(e, popupElement) {
   triggerModal(popupElement);
 }
 
+function addToPlaces(e, popupElement) {
+  e.preventDefault();
+  let newCard = prepCard({
+    name: popupFieldPlaceTitle.value,
+    link: popupFieldPlaceImageURL.value,
+  });
+  placesContainer.prepend(newCard);
+  triggerModal(popupElement);
+}
+
 profileEditButton.addEventListener("click", function () {
   showAndFill(popupTypeEdit);
 });
@@ -71,4 +133,8 @@ popupTypeAddCloseButton.addEventListener("click", function () {
 });
 popupTypeEditSaveButton.addEventListener("click", function (e) {
   saveInputs(e, popupTypeEdit);
+});
+
+popupTypeAddSaveButton.addEventListener("click", function (e) {
+  addToPlaces(e, popupTypeAdd);
 });

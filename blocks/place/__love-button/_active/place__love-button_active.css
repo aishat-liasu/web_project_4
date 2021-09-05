@@ -1,0 +1,4 @@
+.place__love-button_active {
+  opacity: 1;
+  background-image: url("../../../../images/love-btn_active.png");
+}
