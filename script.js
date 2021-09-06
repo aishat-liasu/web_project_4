@@ -28,15 +28,12 @@ const initialCards = [
 const placesContainer = document.querySelector(".places");
 const placeTemplate = document.querySelector("#place-template").content;
 
-const cards = initialCards.map((card) => {
-  return prepCard(card);
-});
-
 function prepCard(placeObj) {
   const place = placeTemplate.querySelector(".place").cloneNode(true);
-  let placeTitle = place.querySelector(".place__title");
-  let placeImage = place.querySelector(".place__image");
-  let placeLikeButton = place.querySelector(".place__love-button");
+  const placeTitle = place.querySelector(".place__title");
+  const placeImage = place.querySelector(".place__image");
+  const placeLikeButton = place.querySelector(".place__love-button");
+  const placeDeleteButton = place.querySelector(".place__delete-button");
 
   placeTitle.textContent = placeObj.name;
   placeImage.src = placeObj.link;
@@ -45,39 +42,49 @@ function prepCard(placeObj) {
   placeLikeButton.addEventListener("click", function () {
     placeLikeButton.classList.toggle("place__love-button_active");
   });
+
+  placeDeleteButton.addEventListener("click", function () {
+    const placeToBeDeleted = placeDeleteButton.closest(".place");
+    placeToBeDeleted.remove();
+  });
+
   return place;
 }
 
+const cards = initialCards.map((card) => {
+  return prepCard(card);
+});
+
 placesContainer.prepend(...cards);
 
-let profileEditButton = document.querySelector(".profile__edit-button");
-let popupTypeEdit = document.querySelector(".popup_type_edit");
-let popupTypeEditCloseButton = document.querySelector(
+const profileEditButton = document.querySelector(".profile__edit-button");
+const popupTypeEdit = document.querySelector(".popup_type_edit");
+const popupTypeEditCloseButton = document.querySelector(
   ".popup_type_edit .popup__close-button"
 );
-let popupTypeEditSaveButton = document.querySelector(
+const popupTypeEditSaveButton = document.querySelector(
   ".popup_type_edit .popup__save-button"
 );
 
-let profileTitle = document.querySelector(".profile__title");
-let profileSubtitle = document.querySelector(".profile__subtitle");
+const profileTitle = document.querySelector(".profile__title");
+const profileSubtitle = document.querySelector(".profile__subtitle");
 
-let popupFieldTitle = document.querySelector(".popup__field_el_title");
-let popupFieldSubtitle = document.querySelector(".popup__field_el_subtitle");
+const popupFieldTitle = document.querySelector(".popup__field_el_title");
+const popupFieldSubtitle = document.querySelector(".popup__field_el_subtitle");
 
-let profileAddButton = document.querySelector(".profile__add-button");
-let popupTypeAdd = document.querySelector(".popup_type_add");
-let popupTypeAddCloseButton = document.querySelector(
+const profileAddButton = document.querySelector(".profile__add-button");
+const popupTypeAdd = document.querySelector(".popup_type_add");
+const popupTypeAddCloseButton = document.querySelector(
   ".popup_type_add .popup__close-button"
 );
-let popupTypeAddSaveButton = document.querySelector(
+const popupTypeAddSaveButton = document.querySelector(
   ".popup_type_add .popup__save-button"
 );
 
-let popupFieldPlaceTitle = document.querySelector(
+const popupFieldPlaceTitle = document.querySelector(
   ".popup__field_el_place-title"
 );
-let popupFieldPlaceImageURL = document.querySelector(
+const popupFieldPlaceImageURL = document.querySelector(
   ".popup__field_el_place-image-url"
 );
 
@@ -107,6 +114,7 @@ function saveInputs(e, popupElement) {
   triggerModal(popupElement);
 }
 
+//adds and new place to the main page
 function addToPlaces(e, popupElement) {
   e.preventDefault();
   let newCard = prepCard({
@@ -121,18 +129,20 @@ profileEditButton.addEventListener("click", function () {
   showAndFill(popupTypeEdit);
 });
 
+popupTypeEditCloseButton.addEventListener("click", function () {
+  triggerModal(popupTypeEdit);
+});
+
+popupTypeEditSaveButton.addEventListener("click", function (e) {
+  saveInputs(e, popupTypeEdit);
+});
+
 profileAddButton.addEventListener("click", function () {
   triggerModal(popupTypeAdd);
 });
 
-popupTypeEditCloseButton.addEventListener("click", function () {
-  triggerModal(popupTypeEdit);
-});
 popupTypeAddCloseButton.addEventListener("click", function () {
   triggerModal(popupTypeAdd);
-});
-popupTypeEditSaveButton.addEventListener("click", function (e) {
-  saveInputs(e, popupTypeEdit);
 });
 
 popupTypeAddSaveButton.addEventListener("click", function (e) {
