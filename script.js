@@ -28,6 +28,10 @@ const initialCards = [
 const placesContainer = document.querySelector(".places");
 const placeTemplate = document.querySelector("#place-template").content;
 
+const popupTypeImage = document.querySelector(".popup_type_image");
+const popupImage = document.querySelector(".popup__image");
+const popupImageLocation = document.querySelector(".popup__image-location");
+
 function prepCard(placeObj) {
   const place = placeTemplate.querySelector(".place").cloneNode(true);
   const placeTitle = place.querySelector(".place__title");
@@ -46,6 +50,12 @@ function prepCard(placeObj) {
   placeDeleteButton.addEventListener("click", function () {
     const placeToBeDeleted = placeDeleteButton.closest(".place");
     placeToBeDeleted.remove();
+  });
+
+  placeImage.addEventListener("click", function () {
+    popupImage.src = placeObj.link;
+    popupImageLocation.textContent = placeObj.name;
+    triggerModal(popupTypeImage);
   });
 
   return place;
@@ -86,6 +96,10 @@ const popupFieldPlaceTitle = document.querySelector(
 );
 const popupFieldPlaceImageURL = document.querySelector(
   ".popup__field_el_place-image-url"
+);
+
+const popupTypeImageCloseButton = document.querySelector(
+  ".popup_type_image .popup__close-button"
 );
 
 //if popup is hidden, displays it.
@@ -147,4 +161,9 @@ popupTypeAddCloseButton.addEventListener("click", function () {
 
 popupTypeAddSaveButton.addEventListener("click", function (e) {
   addToPlaces(e, popupTypeAdd);
+});
+
+popupTypeImageCloseButton.addEventListener("click", function () {
+  console.log("here");
+  triggerModal(popupTypeImage);
 });

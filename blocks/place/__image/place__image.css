@@ -5,4 +5,5 @@
   max-height: 282px;
   border-radius: 10px 10px 0px 0px;
   grid-area: image;
+  cursor: pointer;
 }
