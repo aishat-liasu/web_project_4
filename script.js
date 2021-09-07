@@ -32,7 +32,13 @@ const popupTypeImage = document.querySelector(".popup_type_image");
 const popupImage = document.querySelector(".popup__image");
 const popupImageLocation = document.querySelector(".popup__image-location");
 
-function prepCard(placeObj) {
+function triggerLike(likeButton) {
+  likeButton.classList.toggle("place__love-button_active");
+}
+
+function createCard(placeObj) {
+  const { name, link } = placeObj;
+
   const place = placeTemplate.querySelector(".place").cloneNode(true);
   const placeTitle = place.querySelector(".place__title");
   const placeImage = place.querySelector(".place__image");
@@ -41,36 +47,36 @@ function prepCard(placeObj) {
 
   //fills the card with input gotten from either the initialCards array
   //or new data inputted by a user
-  placeTitle.textContent = placeObj.name;
-  placeImage.src = placeObj.link;
-  placeImage.alt = placeObj.name + " picture";
+  placeTitle.textContent = name;
+  placeImage.src = link;
+  placeImage.alt = name + " picture";
 
   //if the love button hasn't been clicked, clicking it fills the inside with black
   //if it has, changes it back to an empty love shape
   placeLikeButton.addEventListener("click", function () {
-    placeLikeButton.classList.toggle("place__love-button_active");
+    triggerLike(placeLikeButton);
   });
 
   //deletes the card when its delete icon is clicked
   placeDeleteButton.addEventListener("click", function () {
-    const placeToBeDeleted = placeDeleteButton.closest(".place");
+    let placeToBeDeleted = placeDeleteButton.closest(".place");
     placeToBeDeleted.remove();
+    placeToBeDeleted = null;
   });
 
   //fills the popup with the image clicked
   //and its location, then it reveals the popup
   placeImage.addEventListener("click", function () {
-    popupImage.src = placeObj.link;
-    popupImageLocation.textContent = placeObj.name;
-    triggerModal(popupTypeImage);
+    popupImage.src = link;
+    popupImage.alt = name + "picture";
+    popupImageLocation.textContent = name;
+    openPopup(popupTypeImage);
   });
 
   return place;
 }
 
-const cards = initialCards.map((card) => {
-  return prepCard(card);
-});
+const cards = initialCards.map(createCard);
 
 //displays the initial cards on the page
 placesContainer.prepend(...cards);
@@ -110,69 +116,69 @@ const popupTypeImageCloseButton = document.querySelector(
   ".popup_type_image .popup__close-button"
 );
 
-//if popup is hidden, displays it.
-///if popup on display, hids it
-function triggerModal(popupElement) {
-  popupElement.classList.toggle("popup_opened");
+//opens popup
+function openPopup(popupElement) {
+  popupElement.classList.add("popup_opened");
 }
 
-//changes the values of the input fields to value gotten from the page.
-function fillFields() {
+//closes popup
+function closePopup(popupElement) {
+  popupElement.classList.remove("popup_opened");
+}
+
+//fills the values of the input fields to the value gotten from the page.
+function fillProfileFormFields() {
   popupFieldTitle.value = profileTitle.textContent;
   popupFieldSubtitle.value = profileSubtitle.textContent;
 }
 
-//shows the edit profile popup, then fills the fields
-function showAndFill(popupElement) {
-  triggerModal(popupElement);
-  fillFields();
+//shows the edit profile popup,
+//then fills the fields
+function openProfilePopup() {
+  openPopup(popupTypeEdit);
+  fillProfileFormFields();
 }
 
-//changes the profile title and subtitle, then closes the popup
-function saveInputs(e, popupElement) {
+//changes the profile title and subtitle,
+//then closes the popup
+function updateProfile(e) {
   e.preventDefault();
   profileTitle.textContent = popupFieldTitle.value;
   profileSubtitle.textContent = popupFieldSubtitle.value;
-  triggerModal(popupElement);
+  closePopup(popupTypeEdit);
 }
 
-//adds a new place to the main page
+//adds a new card to the main page
 //then closes the popup
-function addToPlaces(e, popupElement) {
+function addCard(e) {
   e.preventDefault();
-  let newCard = prepCard({
+  const newCard = createCard({
     name: popupFieldPlaceTitle.value,
     link: popupFieldPlaceImageURL.value,
   });
 
   placesContainer.prepend(newCard);
-  triggerModal(popupElement);
+  closePopup(popupTypeAdd);
 }
 
-profileEditButton.addEventListener("click", function () {
-  showAndFill(popupTypeEdit);
-});
+profileEditButton.addEventListener("click", openProfilePopup);
 
 popupTypeEditCloseButton.addEventListener("click", function () {
-  triggerModal(popupTypeEdit);
+  closePopup(popupTypeEdit);
 });
 
-popupTypeEditSaveButton.addEventListener("click", function (e) {
-  saveInputs(e, popupTypeEdit);
-});
+popupTypeEditSaveButton.addEventListener("click", updateProfile);
 
 profileAddButton.addEventListener("click", function () {
-  triggerModal(popupTypeAdd);
+  openPopup(popupTypeAdd);
 });
 
 popupTypeAddCloseButton.addEventListener("click", function () {
-  triggerModal(popupTypeAdd);
+  closePopup(popupTypeAdd);
 });
 
-popupTypeAddSaveButton.addEventListener("click", function (e) {
-  addToPlaces(e, popupTypeAdd);
-});
+popupTypeAddSaveButton.addEventListener("click", addCard);
 
 popupTypeImageCloseButton.addEventListener("click", function () {
-  triggerModal(popupTypeImage);
+  closePopup(popupTypeImage);
 });

@@ -1,7 +1,9 @@
 .popup {
   visibility: hidden;
+  display: flex;
   opacity: 0;
-  transition: visibility 0s, opacity 1s linear;
+  pointer-events: none;
+  transition: all 0.6s linear;
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
