@@ -39,19 +39,26 @@ function prepCard(placeObj) {
   const placeLikeButton = place.querySelector(".place__love-button");
   const placeDeleteButton = place.querySelector(".place__delete-button");
 
+  //fills the card with input gotten from either the initialCards array
+  //or new data inputted by a user
   placeTitle.textContent = placeObj.name;
   placeImage.src = placeObj.link;
   placeImage.alt = placeObj.name + " picture";
 
+  //if the love button hasn't been clicked, clicking it fills the inside with black
+  //if it has, changes it back to an empty love shape
   placeLikeButton.addEventListener("click", function () {
     placeLikeButton.classList.toggle("place__love-button_active");
   });
 
+  //deletes the card when its delete icon is clicked
   placeDeleteButton.addEventListener("click", function () {
     const placeToBeDeleted = placeDeleteButton.closest(".place");
     placeToBeDeleted.remove();
   });
 
+  //fills the popup with the image clicked
+  //and its location, then it reveals the popup
   placeImage.addEventListener("click", function () {
     popupImage.src = placeObj.link;
     popupImageLocation.textContent = placeObj.name;
@@ -65,6 +72,7 @@ const cards = initialCards.map((card) => {
   return prepCard(card);
 });
 
+//displays the initial cards on the page
 placesContainer.prepend(...cards);
 
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -128,13 +136,15 @@ function saveInputs(e, popupElement) {
   triggerModal(popupElement);
 }
 
-//adds and new place to the main page
+//adds a new place to the main page
+//then closes the popup
 function addToPlaces(e, popupElement) {
   e.preventDefault();
   let newCard = prepCard({
     name: popupFieldPlaceTitle.value,
     link: popupFieldPlaceImageURL.value,
   });
+
   placesContainer.prepend(newCard);
   triggerModal(popupElement);
 }
@@ -164,6 +174,5 @@ popupTypeAddSaveButton.addEventListener("click", function (e) {
 });
 
 popupTypeImageCloseButton.addEventListener("click", function () {
-  console.log("here");
   triggerModal(popupTypeImage);
 });
