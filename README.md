@@ -1,7 +1,18 @@
 # Around The U.S.
 The website shows different pictures of inspiring places around the U.S.
 
-The website was built with **HTML**, **CSS** and **JavaScript**. Some of the site features hasn't been implemented yet. The add button and like button aren't functional.
+The website was built with **HTML**, **CSS** and **JavaScript**. All of the site funactionality has been implemented yet.
+
+## Features
+
+There is the list of features that are enabled on the page:
+
+- Editing user profile
+- Adding new places
+- Deleting places
+- Liking a place
+- Clicking of image to show full view
+
 
 ## Tools
 
