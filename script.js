@@ -87,7 +87,7 @@ const popupTypeEditCloseButton = document.querySelector(
   ".popup_type_edit .popup__close-button"
 );
 const popupTypeEditSaveButton = document.querySelector(
-  ".popup_type_edit .popup__save-button"
+  ".popup_type_edit .popup__submit-button"
 );
 
 const profileTitle = document.querySelector(".profile__title");
@@ -102,7 +102,7 @@ const popupTypeAddCloseButton = document.querySelector(
   ".popup_type_add .popup__close-button"
 );
 const popupTypeAddSaveButton = document.querySelector(
-  ".popup_type_add .popup__save-button"
+  ".popup_type_add .popup__submit-button"
 );
 
 const popupFieldPlaceTitle = document.querySelector(
@@ -137,6 +137,7 @@ function fillProfileFormFields() {
 function openProfilePopup() {
   openPopup(popupTypeEdit);
   fillProfileFormFields();
+  enableValidation();
 }
 
 //changes the profile title and subtitle,
@@ -161,6 +162,70 @@ function addCard(e) {
   closePopup(popupTypeAdd);
 }
 
+const showFieldError = (formElement, fieldElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`#${fieldElement.id}-error`);
+  //console.log(errorElement);
+  fieldElement.classList.add("popup__field_type_error");
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add("popup__field-error_active");
+};
+
+const hideFieldError = (formElement, fieldElement) => {
+  const errorElement = formElement.querySelector(`#${fieldElement.id}-error`);
+  //console.log(errorElement);
+  fieldElement.classList.remove("popup__field_type_error");
+  errorElement.classList.remove("popup__field-error_active");
+  errorElement.textContent = "";
+};
+
+const checkFieldValidity = (formElement, fieldElement) => {
+  //console.log(fieldElement);
+  if (!fieldElement.validity.valid) {
+    showFieldError(formElement, fieldElement, fieldElement.validationMessage);
+  } else {
+    hideFieldError(formElement, fieldElement);
+  }
+};
+
+const hasInvalidField = (fieldList) => {
+  return fieldList.some((fieldElement) => !fieldElement.validity.valid);
+};
+
+const toggleButtonState = (fieldList, buttonElement) => {
+  if (hasInvalidField(fieldList)) {
+    buttonElement.classList.add("popup__submit-button_inactive");
+  } else {
+    buttonElement.classList.remove("popup__submit-button_inactive");
+  }
+};
+
+const setEventListeners = (formElement) => {
+  const fieldList = Array.from(formElement.querySelectorAll(".popup__field"));
+
+  const buttonElement = formElement.querySelector(
+    `#${formElement.id} .popup__submit-button`
+  );
+  //console.log(buttonElement);
+  toggleButtonState(fieldList, buttonElement);
+
+  fieldList.forEach((fieldElement) => {
+    fieldElement.addEventListener("input", function () {
+      checkFieldValidity(formElement, fieldElement);
+      toggleButtonState(fieldList, buttonElement);
+    });
+  });
+};
+
+const enableValidation = () => {
+  const popupFormList = Array.from(document.querySelectorAll(".popup__form"));
+  popupFormList.forEach((formElement) => {
+    formElement.addEventListener("submit", (evt) => evt.preventDefault());
+    //console.log(formElement.closest(".popup").className);
+
+    setEventListeners(formElement);
+  });
+};
+
 profileEditButton.addEventListener("click", openProfilePopup);
 
 popupTypeEditCloseButton.addEventListener("click", function () {
@@ -171,6 +236,7 @@ popupTypeEditSaveButton.addEventListener("click", updateProfile);
 
 profileAddButton.addEventListener("click", function () {
   openPopup(popupTypeAdd);
+  enableValidation();
 });
 
 popupTypeAddCloseButton.addEventListener("click", function () {
@@ -181,4 +247,22 @@ popupTypeAddSaveButton.addEventListener("click", addCard);
 
 popupTypeImageCloseButton.addEventListener("click", function () {
   closePopup(popupTypeImage);
+});
+
+popupTypeEdit.addEventListener("click", function (evt) {
+  if (evt.target.classList.contains("popup_type_edit")) {
+    closePopup(popupTypeEdit);
+  }
+});
+
+popupTypeAdd.addEventListener("click", function (evt) {
+  if (evt.target.classList.contains("popup_type_add")) {
+    closePopup(popupTypeAdd);
+  }
+});
+
+popupTypeImage.addEventListener("click", function (evt) {
+  if (evt.target.classList.contains("popup_type_image")) {
+    closePopup(popupTypeImage);
+  }
 });

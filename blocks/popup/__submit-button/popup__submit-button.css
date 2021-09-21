@@ -1,4 +1,4 @@
-.popup__save-button {
+.popup__submit-button {
   margin-top: 30px;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -12,6 +12,6 @@
   text-align: center;
 }
 
-.popup__save-button:hover {
+.popup__submit-button:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
