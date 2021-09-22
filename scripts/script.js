@@ -81,6 +81,14 @@ const cards = initialCards.map(createCard);
 //displays the initial cards on the page
 placesContainer.prepend(...cards);
 
+document.querySelector(".page").addEventListener("keydown", function (evt) {
+  console.log(evt.key);
+  console.log(popupTypeImage);
+  if (evt.key === "Escape") {
+    closePopup(popupTypeImage);
+  }
+});
+
 const profileEditButton = document.querySelector(".profile__edit-button");
 const popupTypeEdit = document.querySelector(".popup_type_edit");
 const popupTypeEditCloseButton = document.querySelector(
@@ -123,6 +131,11 @@ function openPopup(popupElement) {
 
 //closes popup
 function closePopup(popupElement) {
+  //console.log(popupElement.querySelector(".popup__form"));
+  if (popupElement.querySelector(".popup__form")) {
+    popupElement.querySelector(".popup__form").reset();
+  }
+
   popupElement.classList.remove("popup_opened");
 }
 
@@ -164,7 +177,7 @@ function addCard(e) {
 
 const showFieldError = (formElement, fieldElement, errorMessage) => {
   const errorElement = formElement.querySelector(`#${fieldElement.id}-error`);
-  //console.log(errorElement);
+
   fieldElement.classList.add("popup__field_type_error");
   errorElement.textContent = errorMessage;
   errorElement.classList.add("popup__field-error_active");
@@ -172,14 +185,13 @@ const showFieldError = (formElement, fieldElement, errorMessage) => {
 
 const hideFieldError = (formElement, fieldElement) => {
   const errorElement = formElement.querySelector(`#${fieldElement.id}-error`);
-  //console.log(errorElement);
+
   fieldElement.classList.remove("popup__field_type_error");
   errorElement.classList.remove("popup__field-error_active");
   errorElement.textContent = "";
 };
 
 const checkFieldValidity = (formElement, fieldElement) => {
-  //console.log(fieldElement);
   if (!fieldElement.validity.valid) {
     showFieldError(formElement, fieldElement, fieldElement.validationMessage);
   } else {
@@ -193,19 +205,17 @@ const hasInvalidField = (fieldList) => {
 
 const toggleButtonState = (fieldList, buttonElement) => {
   if (hasInvalidField(fieldList)) {
-    buttonElement.classList.add("popup__submit-button_inactive");
+    buttonElement.classList.add("popup__submit-button_disabled");
+    buttonElement.setAttribute("disabled", true);
   } else {
-    buttonElement.classList.remove("popup__submit-button_inactive");
+    buttonElement.classList.remove("popup__submit-button_disabled");
+    buttonElement.removeAttribute("disabled");
   }
 };
 
 const setEventListeners = (formElement) => {
   const fieldList = Array.from(formElement.querySelectorAll(".popup__field"));
-
-  const buttonElement = formElement.querySelector(
-    `#${formElement.id} .popup__submit-button`
-  );
-  //console.log(buttonElement);
+  const buttonElement = formElement.querySelector(".popup__submit-button");
   toggleButtonState(fieldList, buttonElement);
 
   fieldList.forEach((fieldElement) => {
@@ -220,10 +230,14 @@ const enableValidation = () => {
   const popupFormList = Array.from(document.querySelectorAll(".popup__form"));
   popupFormList.forEach((formElement) => {
     formElement.addEventListener("submit", (evt) => evt.preventDefault());
-    //console.log(formElement.closest(".popup").className);
-
     setEventListeners(formElement);
   });
+};
+
+const handleClickOutsideForm = (evt, popupElement) => {
+  if (evt.target.classList.contains(evt.target.id)) {
+    closePopup(popupElement);
+  }
 };
 
 profileEditButton.addEventListener("click", openProfilePopup);
@@ -250,19 +264,21 @@ popupTypeImageCloseButton.addEventListener("click", function () {
 });
 
 popupTypeEdit.addEventListener("click", function (evt) {
-  if (evt.target.classList.contains("popup_type_edit")) {
-    closePopup(popupTypeEdit);
-  }
+  handleClickOutsideForm(evt, popupTypeEdit);
 });
 
 popupTypeAdd.addEventListener("click", function (evt) {
-  if (evt.target.classList.contains("popup_type_add")) {
-    closePopup(popupTypeAdd);
-  }
+  handleClickOutsideForm(evt, popupTypeAdd);
 });
 
 popupTypeImage.addEventListener("click", function (evt) {
-  if (evt.target.classList.contains("popup_type_image")) {
+  handleClickOutsideForm(evt, popupTypeImage);
+});
+
+document.addEventListener("keydown", function (evt) {
+  if (evt.key === "Escape") {
+    closePopup(popupTypeEdit);
+    closePopup(popupTypeAdd);
     closePopup(popupTypeImage);
   }
 });

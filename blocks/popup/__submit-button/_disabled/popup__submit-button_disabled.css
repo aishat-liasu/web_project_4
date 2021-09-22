@@ -1,10 +1,10 @@
-.popup__submit-button_inactive {
+.popup__submit-button_disabled {
   color: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(0, 0, 0, 0.2);
   background-color: white;
   cursor: not-allowed
 }
 
-.popup__submit-button_inactive:hover{
+.popup__submit-button_disabled:hover{
   background-color: white;
 }
