@@ -1,4 +1,9 @@
-const showFieldError = (formElement, fieldElement, errorMessage) => {
+const showFieldError = (
+  formElement,
+  fieldElement,
+  errorMessage,
+  classObjects
+) => {
   const errorElement = formElement.querySelector(`#${fieldElement.id}-error`);
 
   fieldElement.classList.add(`${classObjects.fieldErrorClass}`);
@@ -15,7 +20,6 @@ const hideFieldError = (formElement, fieldElement, classObjects) => {
 };
 
 const checkFieldValidity = (formElement, fieldElement, classObjects) => {
-  //console.log(fieldElement);
   if (!fieldElement.validity.valid) {
     showFieldError(
       formElement,
@@ -47,12 +51,13 @@ const setEventListeners = (
   { fieldSelector, submitButtonSelector, ...classObjects }
 ) => {
   const fieldList = Array.from(formElement.querySelectorAll(fieldSelector));
+
   const buttonElement = formElement.querySelector(submitButtonSelector);
 
-  //console.log(buttonElement);
-  toggleButtonState(fieldList, buttonElement);
+  toggleButtonState(fieldList, buttonElement, classObjects);
   fieldList.forEach((fieldElement) => {
     fieldElement.addEventListener("input", function () {
+      console.log(fieldElement);
       checkFieldValidity(formElement, fieldElement, classObjects);
       toggleButtonState(fieldList, buttonElement, classObjects);
     });
@@ -61,23 +66,15 @@ const setEventListeners = (
 
 const enableValidation = ({ formSelector, ...otherObjects }) => {
   const popupFormList = Array.from(document.querySelectorAll(formSelector));
+
   popupFormList.forEach((formElement) => {
     formElement.addEventListener("submit", (evt) => evt.preventDefault());
     setEventListeners(formElement, otherObjects);
   });
 };
 
-const resetFormValidation = (popupElement) => {
+const resetForm = (popupElement) => {
   if (popupElement.querySelector(".popup__form")) {
     popupElement.querySelector(".popup__form").reset();
   }
 };
-
-enableValidation({
-  formSelector: ".popup__form",
-  fieldSelector: ".popup__field",
-  submitButtonSelector: ".popup__submit-button",
-  inactiveButtonClass: "popup__submit-button_disabled",
-  fieldErrorClass: "popup__field_type_error",
-  errorClass: "popup__field-error_active",
-});

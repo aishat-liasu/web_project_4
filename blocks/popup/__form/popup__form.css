@@ -3,8 +3,7 @@
   flex-direction: column;
   background-color: #fff;
   margin: auto;
-  max-width: 358px;
-  min-width: 358px;
+  width: 358px;
   padding: 36px;
   max-height: 330px;
   border-radius: 10px;
@@ -14,7 +13,7 @@
 @media screen and (max-width: 767px) {
   .popup__form {
     padding: 22px;
-    min-width: 238px;
+    width: 238px;
     min-height: 278px;
   }
 }
