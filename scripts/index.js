@@ -1,30 +1,3 @@
-const initialCards = [
-  {
-    name: "Yosemite Valley",
-    link: "https://code.s3.yandex.net/web-code/yosemite.jpg",
-  },
-  {
-    name: "Lake Louise",
-    link: "https://code.s3.yandex.net/web-code/lake-louise.jpg",
-  },
-  {
-    name: "Bald Mountains",
-    link: "https://code.s3.yandex.net/web-code/bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://code.s3.yandex.net/web-code/latemar.jpg",
-  },
-  {
-    name: "Vanoise National Park",
-    link: "https://code.s3.yandex.net/web-code/vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://code.s3.yandex.net/web-code/lago.jpg",
-  },
-];
-
 const placesContainer = document.querySelector(".places");
 const placeTemplate = document.querySelector("#place-template").content;
 
@@ -93,6 +66,8 @@ const popupTypeEditSaveButton = document.querySelector(
 const profileTitle = document.querySelector(".profile__title");
 const profileSubtitle = document.querySelector(".profile__subtitle");
 
+const popupList = Array.from(document.querySelectorAll(".popup"));
+
 const popupFieldTitle = document.querySelector(".popup__field_el_title");
 const popupFieldSubtitle = document.querySelector(".popup__field_el_subtitle");
 
@@ -123,11 +98,6 @@ function openPopup(popupElement) {
 
 //closes popup
 function closePopup(popupElement) {
-  //console.log(popupElement.querySelector(".popup__form"));
-  if (popupElement.querySelector(".popup__form")) {
-    popupElement.querySelector(".popup__form").reset();
-  }
-  resetForm(popupElement);
   popupElement.classList.remove("popup_opened");
 }
 
@@ -142,15 +112,6 @@ function fillProfileFormFields() {
 function openProfilePopup() {
   openPopup(popupTypeEdit);
   fillProfileFormFields();
-
-  enableValidation({
-    formSelector: ".popup__form",
-    fieldSelector: ".popup__field",
-    submitButtonSelector: ".popup__submit-button",
-    inactiveButtonClass: "popup__submit-button_disabled",
-    fieldErrorClass: "popup__field_type_error",
-    errorClass: "popup__field-error_active",
-  });
 }
 
 //changes the profile title and subtitle,
@@ -160,6 +121,7 @@ function updateProfile(e) {
   profileTitle.textContent = popupFieldTitle.value;
   profileSubtitle.textContent = popupFieldSubtitle.value;
   closePopup(popupTypeEdit);
+  resetForm(popupTypeEdit);
 }
 
 //adds a new card to the main page
@@ -173,6 +135,7 @@ function addCard(e) {
 
   placesContainer.prepend(newCard);
   closePopup(popupTypeAdd);
+  resetForm(popupTypeAdd);
 }
 
 const handleClickOutsideForm = (evt, popupElement) => {
@@ -183,7 +146,6 @@ const handleClickOutsideForm = (evt, popupElement) => {
 
 //closes popup when the popup overlay is clicked
 const setEventForPopups = () => {
-  const popupList = Array.from(document.querySelectorAll(".popup"));
   popupList.forEach((popupElement) => {
     popupElement.addEventListener("click", (evt) =>
       handleClickOutsideForm(evt, popupElement)
@@ -193,37 +155,32 @@ const setEventForPopups = () => {
 
 setEventForPopups();
 
-//closes popup on escape key
-document.addEventListener("keydown", function (evt) {
+const handleEscapeKey = (evt) => {
+  const openedPopup = document.querySelector(".popup_opened");
   if (evt.key === "Escape") {
-    closePopup(popupTypeEdit);
-    closePopup(popupTypeAdd);
-    closePopup(popupTypeImage);
+    closePopup(openedPopup);
   }
-});
+};
+
+//closes popup on escape key
+document.addEventListener("keydown", handleEscapeKey);
 
 profileEditButton.addEventListener("click", openProfilePopup);
 
 popupTypeEditCloseButton.addEventListener("click", function () {
   closePopup(popupTypeEdit);
+  resetForm(popupTypeEdit);
 });
 
 popupTypeEditSaveButton.addEventListener("click", updateProfile);
 
 profileAddButton.addEventListener("click", function () {
   openPopup(popupTypeAdd);
-  enableValidation({
-    formSelector: ".popup__form",
-    fieldSelector: ".popup__field",
-    submitButtonSelector: ".popup__submit-button",
-    inactiveButtonClass: "popup__submit-button_disabled",
-    fieldErrorClass: "popup__field_type_error",
-    errorClass: "popup__field-error_active",
-  });
 });
 
 popupTypeAddCloseButton.addEventListener("click", function () {
   closePopup(popupTypeAdd);
+  resetForm(popupTypeAdd);
 });
 
 popupTypeAddSaveButton.addEventListener("click", addCard);

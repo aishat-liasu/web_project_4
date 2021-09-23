@@ -13,10 +13,11 @@ const showFieldError = (
 
 const hideFieldError = (formElement, fieldElement, classObjects) => {
   const errorElement = formElement.querySelector(`#${fieldElement.id}-error`);
-
+  //console.log(errorElement);
   fieldElement.classList.remove(`${classObjects.fieldErrorClass}`);
   errorElement.classList.remove(`${classObjects.errorClass}`);
   errorElement.textContent = "";
+  //console.log("Here");
 };
 
 const checkFieldValidity = (formElement, fieldElement, classObjects) => {
@@ -57,7 +58,6 @@ const setEventListeners = (
   toggleButtonState(fieldList, buttonElement, classObjects);
   fieldList.forEach((fieldElement) => {
     fieldElement.addEventListener("input", function () {
-      console.log(fieldElement);
       checkFieldValidity(formElement, fieldElement, classObjects);
       toggleButtonState(fieldList, buttonElement, classObjects);
     });
@@ -73,8 +73,27 @@ const enableValidation = ({ formSelector, ...otherObjects }) => {
   });
 };
 
+enableValidation({
+  formSelector: ".popup__form",
+  fieldSelector: ".popup__field",
+  submitButtonSelector: ".popup__submit-button",
+  inactiveButtonClass: "popup__submit-button_disabled",
+  fieldErrorClass: "popup__field_type_error",
+  errorClass: "popup__field-error_active",
+});
+
+//clears the error indicators after popup is closed
 const resetForm = (popupElement) => {
-  if (popupElement.querySelector(".popup__form")) {
-    popupElement.querySelector(".popup__form").reset();
-  }
+  const popupForm = popupElement.querySelector(".popup__form");
+  const popupFieldList = Array.from(
+    popupElement.querySelectorAll(".popup__field")
+  );
+  popupFieldList.forEach((fieldElement) => {
+    hideFieldError(popupForm, fieldElement, {
+      inactiveButtonClass: "popup__submit-button_disabled",
+      fieldErrorClass: "popup__field_type_error",
+      errorClass: "popup__field-error_active",
+    });
+  });
+  popupForm.reset();
 };
