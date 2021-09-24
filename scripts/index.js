@@ -9,7 +9,7 @@ function triggerLike(likeButton) {
   likeButton.classList.toggle("place__love-button_active");
 }
 
-function createCard(placeObj) {
+const createCard = (placeObj) => {
   const { name, link } = placeObj;
 
   const place = placeTemplate.querySelector(".place").cloneNode(true);
@@ -43,11 +43,11 @@ function createCard(placeObj) {
     popupImage.src = link;
     popupImage.alt = name + " picture";
     popupImageLocation.textContent = name;
-    openPopup(popupTypeImage);
+    openPopupWithEvent(popupTypeImage);
   });
 
   return place;
-}
+};
 
 const cards = initialCards.map(createCard);
 
@@ -91,6 +91,14 @@ const popupTypeImageCloseButton = document.querySelector(
   ".popup_type_image .popup__close-button"
 );
 
+//closes popup when the Esc key is clicked
+const handleEscapeKey = (evt) => {
+  const openedPopup = document.querySelector(".popup_opened");
+  if (evt.key === "Escape") {
+    closePopupRemoveEvent(openedPopup);
+  }
+};
+
 //opens popup
 function openPopup(popupElement) {
   popupElement.classList.add("popup_opened");
@@ -101,6 +109,28 @@ function closePopup(popupElement) {
   popupElement.classList.remove("popup_opened");
 }
 
+//adds event to the document
+function addEventToDocument() {
+  document.addEventListener("keydown", handleEscapeKey);
+}
+
+//removes event to the document
+function removeEventFromDocument() {
+  document.removeEventListener("keydown", handleEscapeKey);
+}
+
+//adds event to the document after a popup is opened
+const openPopupWithEvent = (popupElement) => {
+  openPopup(popupElement);
+  addEventToDocument();
+};
+
+//removes event to the document after a popup is closed
+const closePopupRemoveEvent = (popupElement) => {
+  closePopup(popupElement);
+  removeEventFromDocument();
+};
+
 //fills the values of the input fields to the value gotten from the page.
 function fillProfileFormFields() {
   popupFieldTitle.value = profileTitle.textContent;
@@ -110,7 +140,7 @@ function fillProfileFormFields() {
 //shows the edit profile popup,
 //then fills the fields
 function openProfilePopup() {
-  openPopup(popupTypeEdit);
+  openPopupWithEvent(popupTypeEdit);
   fillProfileFormFields();
 }
 
@@ -120,7 +150,7 @@ function updateProfile(e) {
   e.preventDefault();
   profileTitle.textContent = popupFieldTitle.value;
   profileSubtitle.textContent = popupFieldSubtitle.value;
-  closePopup(popupTypeEdit);
+  closePopupRemoveEvent(popupTypeEdit);
   resetForm(popupTypeEdit);
 }
 
@@ -134,17 +164,18 @@ function addCard(e) {
   });
 
   placesContainer.prepend(newCard);
-  closePopup(popupTypeAdd);
+  closePopupRemoveEvent(popupTypeAdd);
   resetForm(popupTypeAdd);
 }
 
+//closes popup when the popup overlay is clicked
 const handleClickOutsideForm = (evt, popupElement) => {
   if (evt.target.classList.contains(evt.target.id)) {
-    closePopup(popupElement);
+    closePopupRemoveEvent(popupElement);
   }
 };
 
-//closes popup when the popup overlay is clicked
+//assigns events to all the popups
 const setEventForPopups = () => {
   popupList.forEach((popupElement) => {
     popupElement.addEventListener("click", (evt) =>
@@ -155,36 +186,27 @@ const setEventForPopups = () => {
 
 setEventForPopups();
 
-const handleEscapeKey = (evt) => {
-  const openedPopup = document.querySelector(".popup_opened");
-  if (evt.key === "Escape") {
-    closePopup(openedPopup);
-  }
-};
-
-//closes popup on escape key
-document.addEventListener("keydown", handleEscapeKey);
-
 profileEditButton.addEventListener("click", openProfilePopup);
 
 popupTypeEditCloseButton.addEventListener("click", function () {
-  closePopup(popupTypeEdit);
+  closePopupRemoveEvent(popupTypeEdit);
   resetForm(popupTypeEdit);
 });
 
 popupTypeEditSaveButton.addEventListener("click", updateProfile);
 
 profileAddButton.addEventListener("click", function () {
-  openPopup(popupTypeAdd);
+  resetForm(popupTypeAdd);
+  openPopupWithEvent(popupTypeAdd);
 });
 
 popupTypeAddCloseButton.addEventListener("click", function () {
-  closePopup(popupTypeAdd);
+  closePopupRemoveEvent(popupTypeAdd);
   resetForm(popupTypeAdd);
 });
 
 popupTypeAddSaveButton.addEventListener("click", addCard);
 
 popupTypeImageCloseButton.addEventListener("click", function () {
-  closePopup(popupTypeImage);
+  closePopupRemoveEvent(popupTypeImage);
 });

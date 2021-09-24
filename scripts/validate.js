@@ -13,11 +13,10 @@ const showFieldError = (
 
 const hideFieldError = (formElement, fieldElement, classObjects) => {
   const errorElement = formElement.querySelector(`#${fieldElement.id}-error`);
-  //console.log(errorElement);
+
   fieldElement.classList.remove(`${classObjects.fieldErrorClass}`);
   errorElement.classList.remove(`${classObjects.errorClass}`);
   errorElement.textContent = "";
-  //console.log("Here");
 };
 
 const checkFieldValidity = (formElement, fieldElement, classObjects) => {
@@ -82,12 +81,14 @@ enableValidation({
   errorClass: "popup__field-error_active",
 });
 
-//clears the error indicators after popup is closed
+//clears the error indicators and resets the form
 const resetForm = (popupElement) => {
   const popupForm = popupElement.querySelector(".popup__form");
   const popupFieldList = Array.from(
     popupElement.querySelectorAll(".popup__field")
   );
+  const buttonElement = popupElement.querySelector(".popup__submit-button");
+
   popupFieldList.forEach((fieldElement) => {
     hideFieldError(popupForm, fieldElement, {
       inactiveButtonClass: "popup__submit-button_disabled",
@@ -96,4 +97,7 @@ const resetForm = (popupElement) => {
     });
   });
   popupForm.reset();
+
+  buttonElement.classList.add("popup__submit-button_disabled");
+  buttonElement.setAttribute("disabled", true);
 };
