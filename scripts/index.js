@@ -43,7 +43,7 @@ const createCard = (placeObj) => {
     popupImage.src = link;
     popupImage.alt = name + " picture";
     popupImageLocation.textContent = name;
-    openPopupWithEvent(popupTypeImage);
+    openPopup(popupTypeImage);
   });
 
   return place;
@@ -95,19 +95,9 @@ const popupTypeImageCloseButton = document.querySelector(
 const handleEscapeKey = (evt) => {
   const openedPopup = document.querySelector(".popup_opened");
   if (evt.key === "Escape") {
-    closePopupRemoveEvent(openedPopup);
+    closePopup(openedPopup);
   }
 };
-
-//opens popup
-function openPopup(popupElement) {
-  popupElement.classList.add("popup_opened");
-}
-
-//closes popup
-function closePopup(popupElement) {
-  popupElement.classList.remove("popup_opened");
-}
 
 //adds event to the document
 function addEventToDocument() {
@@ -119,17 +109,17 @@ function removeEventFromDocument() {
   document.removeEventListener("keydown", handleEscapeKey);
 }
 
-//adds event to the document after a popup is opened
-const openPopupWithEvent = (popupElement) => {
-  openPopup(popupElement);
+//opens popup
+function openPopup(popupElement) {
+  popupElement.classList.add("popup_opened");
   addEventToDocument();
-};
+}
 
-//removes event to the document after a popup is closed
-const closePopupRemoveEvent = (popupElement) => {
-  closePopup(popupElement);
+//closes popup
+function closePopup(popupElement) {
+  popupElement.classList.remove("popup_opened");
   removeEventFromDocument();
-};
+}
 
 //fills the values of the input fields to the value gotten from the page.
 function fillProfileFormFields() {
@@ -140,7 +130,7 @@ function fillProfileFormFields() {
 //shows the edit profile popup,
 //then fills the fields
 function openProfilePopup() {
-  openPopupWithEvent(popupTypeEdit);
+  openPopup(popupTypeEdit);
   fillProfileFormFields();
 }
 
@@ -150,7 +140,7 @@ function updateProfile(e) {
   e.preventDefault();
   profileTitle.textContent = popupFieldTitle.value;
   profileSubtitle.textContent = popupFieldSubtitle.value;
-  closePopupRemoveEvent(popupTypeEdit);
+  closePopup(popupTypeEdit);
   resetForm(popupTypeEdit);
 }
 
@@ -164,14 +154,14 @@ function addCard(e) {
   });
 
   placesContainer.prepend(newCard);
-  closePopupRemoveEvent(popupTypeAdd);
+  closePopupRemove(popupTypeAdd);
   resetForm(popupTypeAdd);
 }
 
 //closes popup when the popup overlay is clicked
 const handleClickOutsideForm = (evt, popupElement) => {
   if (evt.target.classList.contains(evt.target.id)) {
-    closePopupRemoveEvent(popupElement);
+    closePopup(popupElement);
   }
 };
 
@@ -189,7 +179,7 @@ setEventForPopups();
 profileEditButton.addEventListener("click", openProfilePopup);
 
 popupTypeEditCloseButton.addEventListener("click", function () {
-  closePopupRemoveEvent(popupTypeEdit);
+  closePopup(popupTypeEdit);
   resetForm(popupTypeEdit);
 });
 
@@ -197,16 +187,16 @@ popupTypeEditSaveButton.addEventListener("click", updateProfile);
 
 profileAddButton.addEventListener("click", function () {
   resetForm(popupTypeAdd);
-  openPopupWithEvent(popupTypeAdd);
+  openPopup(popupTypeAdd);
 });
 
 popupTypeAddCloseButton.addEventListener("click", function () {
-  closePopupRemoveEvent(popupTypeAdd);
+  closePopup(popupTypeAdd);
   resetForm(popupTypeAdd);
 });
 
 popupTypeAddSaveButton.addEventListener("click", addCard);
 
 popupTypeImageCloseButton.addEventListener("click", function () {
-  closePopupRemoveEvent(popupTypeImage);
+  closePopup(popupTypeImage);
 });
