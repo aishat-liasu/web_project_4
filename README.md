@@ -1,7 +1,7 @@
 # Around The U.S.
 The website shows different pictures of inspiring places around the U.S.
 
-The website was built with **HTML**, **CSS** and **JavaScript**. All of the site funactionality has been implemented yet.
+The website was built with **HTML**, **CSS** and **JavaScript**. All of the site functionality has been implemented yet.
 
 ## Features
 
