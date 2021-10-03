@@ -5,51 +5,74 @@ const popupTypeImage = document.querySelector(".popup_type_image");
 const popupImage = document.querySelector(".popup__image");
 const popupImageLocation = document.querySelector(".popup__image-location");
 
-function triggerLike(likeButton) {
-  likeButton.classList.toggle("place__love-button_active");
+class Card {
+  constructor(data, cardTemplate) {
+    this._name = data.name;
+    this._link = data.link;
+    //this._cardTemplate = cardTemplate;
+    this._place = cardTemplate.querySelector(".place").cloneNode(true);
+  }
+
+  _getPlaceDetails() {
+    this._placeTitle = this._place.querySelector(".place__title");
+    this._placeImage = this._place.querySelector(".place__image");
+    this._placeLikeButton = this._place.querySelector(".place__love-button");
+    this._placeDeleteButton = this._place.querySelector(
+      ".place__delete-button"
+    );
+
+    this._placeTitle.textContent = this._name;
+    this._placeImage.src = this._link;
+    this._placeImage.alt = this._name + " picture";
+  }
+
+  _triggerLike() {
+    this._placeLikeButton.classList.toggle("place__love-button_active");
+  }
+
+  _deleteCard() {
+    this._placeToBeDeleted = this._placeDeleteButton.closest(".place");
+    this._placeToBeDeleted.remove();
+    this._placeToBeDeleted = null;
+  }
+
+  _openImagePopup() {
+    popupImage.src = this._link;
+    popupImage.alt = this._name + " picture";
+    popupImageLocation.textContent = this._name;
+    openPopup(popupTypeImage);
+  }
+
+  _setEventListeners() {
+    this._placeLikeButton.addEventListener("click", () => {
+      this._triggerLike();
+    });
+    //deletes the card when its delete icon is clicked
+    this._placeDeleteButton.addEventListener("click", () => {
+      this._deleteCard();
+    });
+
+    //fills the popup with the image clicked
+    //and its location, then it reveals the popup
+    this._placeImage.addEventListener("click", () => {
+      this._openImagePopup();
+    });
+  }
+
+  generateCard() {
+    this._getPlaceDetails();
+    this._setEventListeners();
+    return this._place;
+  }
 }
 
-const createCard = (placeObj) => {
-  const { name, link } = placeObj;
+const cards = initialCards.map((item) => {
+  const card = new Card(item, placeTemplate);
 
-  const place = placeTemplate.querySelector(".place").cloneNode(true);
-  const placeTitle = place.querySelector(".place__title");
-  const placeImage = place.querySelector(".place__image");
-  const placeLikeButton = place.querySelector(".place__love-button");
-  const placeDeleteButton = place.querySelector(".place__delete-button");
+  return card.generateCard();
+});
 
-  //fills the card with input gotten from either the initialCards array
-  //or new data inputted by a user
-  placeTitle.textContent = name;
-  placeImage.src = link;
-  placeImage.alt = name + " picture";
-
-  //if the love button hasn't been clicked, clicking it fills the inside with black
-  //if it has, changes it back to an empty love shape
-  placeLikeButton.addEventListener("click", function () {
-    triggerLike(placeLikeButton);
-  });
-
-  //deletes the card when its delete icon is clicked
-  placeDeleteButton.addEventListener("click", function () {
-    let placeToBeDeleted = placeDeleteButton.closest(".place");
-    placeToBeDeleted.remove();
-    placeToBeDeleted = null;
-  });
-
-  //fills the popup with the image clicked
-  //and its location, then it reveals the popup
-  placeImage.addEventListener("click", function () {
-    popupImage.src = link;
-    popupImage.alt = name + " picture";
-    popupImageLocation.textContent = name;
-    openPopup(popupTypeImage);
-  });
-
-  return place;
-};
-
-const cards = initialCards.map(createCard);
+console.log(cards);
 
 //displays the initial cards on the page
 placesContainer.prepend(...cards);
@@ -148,13 +171,16 @@ function updateProfile(e) {
 //then closes the popup
 function addCard(e) {
   e.preventDefault();
-  const newCard = createCard({
-    name: popupFieldPlaceTitle.value,
-    link: popupFieldPlaceImageURL.value,
-  });
+  const newCard = new Card(
+    {
+      name: popupFieldPlaceTitle.value,
+      link: popupFieldPlaceImageURL.value,
+    },
+    placeTemplate
+  );
 
-  placesContainer.prepend(newCard);
-  closePopupRemove(popupTypeAdd);
+  placesContainer.prepend(newCard.generateCard());
+  closePopup(popupTypeAdd);
   resetForm(popupTypeAdd);
 }
 
