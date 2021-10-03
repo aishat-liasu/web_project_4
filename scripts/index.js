@@ -1,81 +1,33 @@
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+
 const placesContainer = document.querySelector(".places");
-const placeTemplate = document.querySelector("#place-template").content;
-
-const popupTypeImage = document.querySelector(".popup_type_image");
-const popupImage = document.querySelector(".popup__image");
-const popupImageLocation = document.querySelector(".popup__image-location");
-
-class Card {
-  constructor(data, cardTemplate) {
-    this._name = data.name;
-    this._link = data.link;
-    //this._cardTemplate = cardTemplate;
-    this._place = cardTemplate.querySelector(".place").cloneNode(true);
-  }
-
-  _getPlaceDetails() {
-    this._placeTitle = this._place.querySelector(".place__title");
-    this._placeImage = this._place.querySelector(".place__image");
-    this._placeLikeButton = this._place.querySelector(".place__love-button");
-    this._placeDeleteButton = this._place.querySelector(
-      ".place__delete-button"
-    );
-
-    this._placeTitle.textContent = this._name;
-    this._placeImage.src = this._link;
-    this._placeImage.alt = this._name + " picture";
-  }
-
-  _triggerLike() {
-    this._placeLikeButton.classList.toggle("place__love-button_active");
-  }
-
-  _deleteCard() {
-    this._placeToBeDeleted = this._placeDeleteButton.closest(".place");
-    this._placeToBeDeleted.remove();
-    this._placeToBeDeleted = null;
-  }
-
-  _openImagePopup() {
-    popupImage.src = this._link;
-    popupImage.alt = this._name + " picture";
-    popupImageLocation.textContent = this._name;
-    openPopup(popupTypeImage);
-  }
-
-  _setEventListeners() {
-    this._placeLikeButton.addEventListener("click", () => {
-      this._triggerLike();
-    });
-    //deletes the card when its delete icon is clicked
-    this._placeDeleteButton.addEventListener("click", () => {
-      this._deleteCard();
-    });
-
-    //fills the popup with the image clicked
-    //and its location, then it reveals the popup
-    this._placeImage.addEventListener("click", () => {
-      this._openImagePopup();
-    });
-  }
-
-  generateCard() {
-    this._getPlaceDetails();
-    this._setEventListeners();
-    return this._place;
-  }
-}
 
 const cards = initialCards.map((item) => {
-  const card = new Card(item, placeTemplate);
+  const card = new Card(item, "#place-template");
 
   return card.generateCard();
 });
 
-console.log(cards);
-
 //displays the initial cards on the page
 placesContainer.prepend(...cards);
+
+const popupFormList = Array.from(document.querySelectorAll(".popup__form"));
+
+popupFormList.forEach((formElement) => {
+  const formToBeValidated = new FormValidator(
+    {
+      formSelector: ".popup__form",
+      fieldSelector: ".popup__field",
+      submitButtonSelector: ".popup__submit-button",
+      inactiveButtonClass: "popup__submit-button_disabled",
+      fieldErrorClass: "popup__field_type_error",
+      errorClass: "popup__field-error_active",
+    },
+    formElement
+  );
+  formToBeValidated.enableValidation();
+});
 
 const profileEditButton = document.querySelector(".profile__edit-button");
 const popupTypeEdit = document.querySelector(".popup_type_edit");
@@ -108,10 +60,6 @@ const popupFieldPlaceTitle = document.querySelector(
 );
 const popupFieldPlaceImageURL = document.querySelector(
   ".popup__field_el_place-image-url"
-);
-
-const popupTypeImageCloseButton = document.querySelector(
-  ".popup_type_image .popup__close-button"
 );
 
 //closes popup when the Esc key is clicked
@@ -176,7 +124,7 @@ function addCard(e) {
       name: popupFieldPlaceTitle.value,
       link: popupFieldPlaceImageURL.value,
     },
-    placeTemplate
+    "#place-template"
   );
 
   placesContainer.prepend(newCard.generateCard());
@@ -222,7 +170,3 @@ popupTypeAddCloseButton.addEventListener("click", function () {
 });
 
 popupTypeAddSaveButton.addEventListener("click", addCard);
-
-popupTypeImageCloseButton.addEventListener("click", function () {
-  closePopup(popupTypeImage);
-});
