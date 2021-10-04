@@ -1,17 +1,15 @@
+const popupTypeImage = document.querySelector(".popup_type_image");
+const popupImage = document.querySelector(".popup__image");
+const popupImageLocation = document.querySelector(".popup__image-location");
+const popupTypeImageCloseButton = document.querySelector(
+  ".popup_type_image .popup__close-button"
+);
+
 export default class Card {
   constructor(data, templateSelector) {
     this._name = data.name;
     this._link = data.link;
     this._templateSelector = templateSelector;
-  }
-
-  _getPopupDetails() {
-    this._popupTypeImage = document.querySelector(".popup_type_image");
-    this._popupImage = document.querySelector(".popup__image");
-    this._popupImageLocation = document.querySelector(".popup__image-location");
-    this._popupTypeImageCloseButton = document.querySelector(
-      ".popup_type_image .popup__close-button"
-    );
   }
 
   _getPlaceElement() {
@@ -41,42 +39,45 @@ export default class Card {
   }
 
   _deleteCard() {
-    this._placeToBeDeleted = this._placeDeleteButton.closest(".place");
-    this._placeToBeDeleted.remove();
-    this._placeToBeDeleted = null;
+    let placeToBeDeleted = this._placeDeleteButton.closest(".place");
+    placeToBeDeleted.remove();
+    placeToBeDeleted = null;
   }
 
-  handleEscapeKey(evt) {
-    const openedPopup = document.querySelector(".popup_opened");
+  _handleEscapeKey(evt) {
     if (evt.key === "Escape") {
-      this._closePopup(openedPopup);
+      this._closePopup();
     }
   }
   //adds event to the document
   _addEventToDocument() {
-    document.addEventListener("keydown", handleEscapeKey);
+    document.addEventListener("keydown", (e) => {
+      this._handleEscapeKey(e);
+    });
   }
 
   //removes event to the document
   _removeEventFromDocument() {
-    document.removeEventListener("keydown", handleEscapeKey);
+    document.removeEventListener("keydown", (e) => {
+      this._handleEscapeKey(e);
+    });
   }
 
-  _openPopup(popupElement) {
-    popupElement.classList.add("popup_opened");
+  _openPopup() {
+    popupTypeImage.classList.add("popup_opened");
     this._addEventToDocument();
   }
 
-  _closePopup(popupElement) {
-    popupElement.classList.remove("popup_opened");
+  _closePopup() {
+    popupTypeImage.classList.remove("popup_opened");
     this._removeEventFromDocument();
   }
 
   _openImagePopup() {
-    this._popupImage.src = this._link;
-    this._popupImage.alt = this._name + " picture";
-    this._popupImageLocation.textContent = this._name;
-    this._openPopup(this._popupTypeImage);
+    popupImage.src = this._link;
+    popupImage.alt = `${this._name} picture`;
+    popupImageLocation.textContent = this._name;
+    this._openPopup();
   }
 
   _setEventListeners() {
@@ -94,14 +95,14 @@ export default class Card {
     this._placeImage.addEventListener("click", () => {
       this._openImagePopup();
     });
-    this._popupTypeImageCloseButton.addEventListener("click", () => {
-      this._closePopup(this._popupTypeImage);
+
+    popupTypeImageCloseButton.addEventListener("click", () => {
+      this._closePopup();
     });
   }
 
   generateCard() {
     this._getPlaceDetails();
-    this._getPopupDetails();
     this._setEventListeners();
     return this._place;
   }
