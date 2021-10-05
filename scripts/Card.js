@@ -39,7 +39,7 @@ export default class Card {
   }
 
   _deleteCard() {
-    let placeToBeDeleted = this._placeDeleteButton.closest(".place");
+    const placeToBeDeleted = this._placeDeleteButton.closest(".place");
     placeToBeDeleted.remove();
   }
 
