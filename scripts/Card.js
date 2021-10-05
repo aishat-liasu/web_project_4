@@ -31,7 +31,7 @@ export default class Card {
 
     this._placeTitle.textContent = this._name;
     this._placeImage.src = this._link;
-    this._placeImage.alt = this._name + " picture";
+    this._placeImage.alt = `${this._name} picture`;
   }
 
   _likeCard() {
@@ -41,7 +41,6 @@ export default class Card {
   _deleteCard() {
     let placeToBeDeleted = this._placeDeleteButton.closest(".place");
     placeToBeDeleted.remove();
-    placeToBeDeleted = null;
   }
 
   _handleEscapeKey(evt) {
@@ -58,9 +57,7 @@ export default class Card {
 
   //removes event to the document
   _removeEventFromDocument() {
-    document.removeEventListener("keydown", (e) => {
-      this._handleEscapeKey(e);
-    });
+    document.removeEventListener("keydown", this._handleEscapeKey);
   }
 
   _openPopup() {
