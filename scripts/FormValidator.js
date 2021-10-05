@@ -67,7 +67,6 @@ export default class FormValidator {
       });
     });
     this._formElement.addEventListener("reset", () => {
-      console.log("here");
       this._fieldList.forEach((fieldElement) => {
         this._hideFieldError(fieldElement);
       });
