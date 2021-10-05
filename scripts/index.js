@@ -1,17 +1,19 @@
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
-
-const placesContainer = document.querySelector(".places");
+import { initialCards } from "./initial-cards.js";
+import { resetForm } from "./validate.js";
 
 const cards = initialCards.map((item) => {
   const card = new Card(item, "#place-template");
-
   return card.generateCard();
 });
+
+const placesContainer = document.querySelector(".places");
 
 //displays the initial cards on the page
 placesContainer.prepend(...cards);
 
+const popupList = Array.from(document.querySelectorAll(".popup"));
 const popupFormList = Array.from(document.querySelectorAll(".popup__form"));
 
 popupFormList.forEach((formElement) => {
@@ -40,8 +42,6 @@ const popupTypeEditSaveButton = document.querySelector(
 
 const profileTitle = document.querySelector(".profile__title");
 const profileSubtitle = document.querySelector(".profile__subtitle");
-
-const popupList = Array.from(document.querySelectorAll(".popup"));
 
 const popupFieldTitle = document.querySelector(".popup__field_el_title");
 const popupFieldSubtitle = document.querySelector(".popup__field_el_subtitle");
@@ -90,6 +90,7 @@ function openPopup(popupElement) {
 function closePopup(popupElement) {
   popupElement.classList.remove("popup_opened");
   removeEventFromDocument();
+  resetForm(popupElement);
 }
 
 //fills the values of the input fields to the value gotten from the page.
@@ -112,7 +113,6 @@ function updateProfile(e) {
   profileTitle.textContent = popupFieldTitle.value;
   profileSubtitle.textContent = popupFieldSubtitle.value;
   closePopup(popupTypeEdit);
-  resetForm(popupTypeEdit);
 }
 
 //adds a new card to the main page
@@ -129,7 +129,6 @@ function addCard(e) {
 
   placesContainer.prepend(newCard.generateCard());
   closePopup(popupTypeAdd);
-  resetForm(popupTypeAdd);
 }
 
 //closes popup when the popup overlay is clicked
@@ -154,19 +153,16 @@ profileEditButton.addEventListener("click", openProfilePopup);
 
 popupTypeEditCloseButton.addEventListener("click", function () {
   closePopup(popupTypeEdit);
-  resetForm(popupTypeEdit);
 });
 
 popupTypeEditSaveButton.addEventListener("click", updateProfile);
 
 profileAddButton.addEventListener("click", function () {
-  resetForm(popupTypeAdd);
   openPopup(popupTypeAdd);
 });
 
 popupTypeAddCloseButton.addEventListener("click", function () {
   closePopup(popupTypeAdd);
-  resetForm(popupTypeAdd);
 });
 
 popupTypeAddSaveButton.addEventListener("click", addCard);
