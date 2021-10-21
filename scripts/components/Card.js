@@ -1,14 +1,10 @@
-const popupTypeImage = document.querySelector(".popup_type_image");
-const popupImage = document.querySelector(".popup__image");
-const popupImageLocation = document.querySelector(".popup__image-location");
-const popupTypeImageCloseButton = document.querySelector(
-  ".popup_type_image .popup__close-button"
-);
+import PopupWithImage from "./PopupWithImage.js";
 
 export default class Card {
   constructor(data, templateSelector) {
     this._name = data.name;
     this._link = data.link;
+    this._data = data;
     this._templateSelector = templateSelector;
   }
 
@@ -43,41 +39,11 @@ export default class Card {
     placeToBeDeleted.remove();
   }
 
-  _handleEscapeKey(evt) {
-    if (evt.key === "Escape") {
-      this._closePopup();
-    }
-  }
-  //adds event to the document
-  _addEventToDocument() {
-    document.addEventListener("keydown", (e) => {
-      this._handleEscapeKey(e);
-    });
-  }
-
-  //removes event to the document
-  _removeEventFromDocument() {
-    document.removeEventListener("keydown", this._handleEscapeKey);
-  }
-
-  _openPopup() {
-    popupTypeImage.classList.add("popup_opened");
-    this._addEventToDocument();
-  }
-
-  _closePopup() {
-    popupTypeImage.classList.remove("popup_opened");
-    this._removeEventFromDocument();
-  }
-
-  _openImagePopup() {
-    popupImage.src = this._link;
-    popupImage.alt = `${this._name} picture`;
-    popupImageLocation.textContent = this._name;
-    this._openPopup();
-  }
-
   _setEventListeners() {
+    const ImagePopup = new PopupWithImage(this._data, ".popup_type_image");
+
+    ImagePopup.setEventListeners();
+
     this._placeLikeButton.addEventListener("click", () => {
       this._likeCard();
     });
@@ -90,11 +56,7 @@ export default class Card {
     //fills the popup with the image clicked
     //and its location, then it reveals the popup
     this._placeImage.addEventListener("click", () => {
-      this._openImagePopup();
-    });
-
-    popupTypeImageCloseButton.addEventListener("click", () => {
-      this._closePopup();
+      ImagePopup.open();
     });
   }
 
