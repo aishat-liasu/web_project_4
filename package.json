@@ -1,0 +1,23 @@
+{
+  "name": "web_project_4",
+  "version": "1.0.0",
+  "description": "The website shows different pictures of inspiring places around the U.S.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arike-liasu/web_project_4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arike-liasu/web_project_4/issues"
+  },
+  "homepage": "https://github.com/arike-liasu/web_project_4#readme",
+  "devDependencies": {
+    "webpack": "^5.59.1"
+  }
+}
