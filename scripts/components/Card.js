@@ -40,9 +40,9 @@ export default class Card {
   }
 
   _setEventListeners() {
-    const ImagePopup = new PopupWithImage(this._data, ".popup_type_image");
+    const imagePopup = new PopupWithImage(this._data, ".popup_type_image");
 
-    ImagePopup.setEventListeners();
+    imagePopup.setEventListeners();
 
     this._placeLikeButton.addEventListener("click", () => {
       this._likeCard();
@@ -56,7 +56,7 @@ export default class Card {
     //fills the popup with the image clicked
     //and its location, then it reveals the popup
     this._placeImage.addEventListener("click", () => {
-      ImagePopup.open();
+      imagePopup.open();
     });
   }
 

@@ -1,6 +1,3 @@
-const profileTitle = document.querySelector(".profile__title");
-const profileSubtitle = document.querySelector(".profile__subtitle");
-
 const popupFieldTitle = document.querySelector(".popup__field_el_title");
 const popupFieldSubtitle = document.querySelector(".popup__field_el_subtitle");
 
