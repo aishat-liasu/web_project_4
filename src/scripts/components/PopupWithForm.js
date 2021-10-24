@@ -6,8 +6,6 @@ export default class PopupWithForm extends Popup {
     this._callback = callback;
   }
 
-  _getInputValues() {}
-
   close() {
     super.close();
     this._popupElement.querySelector(".popup__form").reset();
