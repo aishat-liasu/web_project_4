@@ -4,22 +4,36 @@
   "description": "The website shows different pictures of inspiring places around the U.S.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode production",
+    "dev": "webpack serve"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arike-liasu/web_project_4.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Aishat Liasu",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/arike-liasu/web_project_4/issues"
   },
   "homepage": "https://github.com/arike-liasu/web_project_4#readme",
   "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "autoprefixer": "^10.3.7",
+    "babel-loader": "^8.2.3",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.4.0",
+    "cssnano": "^5.0.8",
+    "html-webpack-plugin": "^5.4.0",
+    "mini-css-extract-plugin": "^2.4.3",
+    "postcss-loader": "^6.2.0",
     "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1"
+  },
+  "dependencies": {
+    "core-js": "^3.18.3"
   }
 }
