@@ -1,7 +1,6 @@
 import Popup from "./Popup.js";
 
-const popupImage = document.querySelector(".popup__image");
-const popupImageLocation = document.querySelector(".popup__image-location");
+import { popupImage, popupImageLocation } from "../utils/utils.js";
 
 export default class PopupWithImage extends Popup {
   constructor({ name, link }, popupSelector) {

@@ -5,7 +5,15 @@ import PopupWithForm from "./components/PopupWithForm.js";
 import Section from "./components/Section.js";
 import UserInfo from "./components/UserInfo.js";
 
-import { initialCards } from "./initial-cards.js";
+import {
+  initialCards,
+  profileAddButton,
+  profileEditButton,
+  popupFieldPlaceImageURL,
+  popupFieldPlaceTitle,
+} from "./utils/utils.js";
+
+import "../pages/index.css";
 
 const cardList = new Section(
   {
@@ -37,18 +45,6 @@ popupFormList.forEach((formElement) => {
   );
   formToBeValidated.enableValidation();
 });
-
-const profileEditButton = document.querySelector(".profile__edit-button");
-
-const profileAddButton = document.querySelector(".profile__add-button");
-
-const popupFieldPlaceTitle = document.querySelector(
-  ".popup__field_el_place-title"
-);
-
-const popupFieldPlaceImageURL = document.querySelector(
-  ".popup__field_el_place-image-url"
-);
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",

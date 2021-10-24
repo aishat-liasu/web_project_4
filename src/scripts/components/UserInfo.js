@@ -1,5 +1,4 @@
-const popupFieldTitle = document.querySelector(".popup__field_el_title");
-const popupFieldSubtitle = document.querySelector(".popup__field_el_subtitle");
+import { popupFieldTitle, popupFieldSubtitle } from "../utils/utils";
 
 export default class UserInfo {
   constructor({ nameSelector, jobSelector }) {
@@ -9,10 +8,10 @@ export default class UserInfo {
   getUserInfo() {
     popupFieldTitle.value = this._nameElement.textContent;
     popupFieldSubtitle.value = this._jobElement.textContent;
-    return {
+    /*     return {
       name: this._nameElement.textContent,
       job: this._jobElement.textContent,
-    };
+    }; */
   }
   setUserInfo() {
     this._nameElement.textContent = popupFieldTitle.value;
