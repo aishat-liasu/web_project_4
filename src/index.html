@@ -7,8 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Around the U.S</title>
-  <link rel="stylesheet" href="./pages/index.css">
-  <link rel="shortcut icon" href="./images/myoctocat.png" type="image/x-icon">
+  <link rel="shortcut icon" href="<%=require('./images/myoctocat.png')%>" type="image/x-icon">
 </head>
 
 <body>
@@ -54,7 +53,7 @@
     <section class="popup popup_type_image" id="popup_type_image">
       <div class="popup__container">
         <button type="reset" class="popup__close-button" aria-label="close"></button>
-        <img src="./images/latemar.png" alt="popup-image" class="popup__image">
+        <img src="<%=require('./images/latemar.png')%>" alt="popup-image" class="popup__image">
         <p class="popup__image-location"></p>
       </div>
     </section>
@@ -65,7 +64,7 @@
     <main class="main">
       <section class="profile">
         <div class="profile__content">
-          <img src="./images/profile-pic.jpg" alt="profile picture" class="profile__avatar">
+          <img src="<%=require('./images/profile-pic.jpg')%>" alt="profile picture" class="profile__avatar">
           <div class="profile__info">
             <div class="profile__title-edit">
               <h1 class="profile__title">Jacques Cousteau</h1>
@@ -97,7 +96,6 @@
 
   </div>
 
-  <script type="module" src=" scripts/index.js"></script>
 
 </body>
 
