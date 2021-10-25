@@ -1,9 +1,10 @@
-import Card from "./components/Card.js";
-import FormValidator from "./components/FormValidator.js";
+import Card from "../scripts/components/Card.js";
+import FormValidator from "../scripts/components/FormValidator.js";
 
-import PopupWithForm from "./components/PopupWithForm.js";
-import Section from "./components/Section.js";
-import UserInfo from "./components/UserInfo.js";
+import PopupWithForm from "../scripts/components/PopupWithForm.js";
+import PopupWithImage from "../scripts/components/PopupWithImage.js";
+import Section from "../scripts/components/Section.js";
+import UserInfo from "../scripts/components/UserInfo.js";
 
 import {
   initialCards,
@@ -11,21 +12,33 @@ import {
   profileEditButton,
   popupFieldPlaceImageURL,
   popupFieldPlaceTitle,
-} from "./utils/utils.js";
+  popupImage,
+  popupImageLocation,
+  popupFieldTitle,
+  popupFieldSubtitle,
+} from "../scripts/utils/constants.js";
 
-import "../pages/index.css";
+import "./index.css";
 
 const cardList = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-      const card = new Card(item, "#place-template");
-      const cardElement = card.generateCard();
-      cardList.addItem(cardElement);
+      createCard(item);
     },
   },
   ".places"
 );
+
+function createCard(item) {
+  const card = new Card(item, "#place-template", () => {
+    const imagePopup = new PopupWithImage(item, ".popup_type_image");
+    imagePopup.setEventListeners();
+    imagePopup.open(popupImage, popupImageLocation);
+  });
+  const cardElement = card.generateCard();
+  cardList.addItem(cardElement);
+}
 
 cardList.renderItems();
 
@@ -52,19 +65,14 @@ const userInfo = new UserInfo({
 });
 
 const popupAdd = new PopupWithForm(() => {
-  const newCard = new Card(
-    {
-      name: popupFieldPlaceTitle.value,
-      link: popupFieldPlaceImageURL.value,
-    },
-    "#place-template"
-  );
-
-  cardList.addItem(newCard.generateCard());
+  createCard({
+    name: popupFieldPlaceTitle.value,
+    link: popupFieldPlaceImageURL.value,
+  });
 }, ".popup_type_add");
 
 const popupEdit = new PopupWithForm(() => {
-  userInfo.setUserInfo();
+  userInfo.setUserInfo(popupFieldTitle, popupFieldSubtitle);
 }, ".popup_type_edit");
 
 popupAdd.setEventListeners();
