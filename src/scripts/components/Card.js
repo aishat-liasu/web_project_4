@@ -1,11 +1,9 @@
-import PopupWithImage from "./PopupWithImage.js";
-
 export default class Card {
-  constructor(data, templateSelector) {
-    this._name = data.name;
-    this._link = data.link;
-    this._data = data;
+  constructor({ name, link }, templateSelector, handleClick) {
+    this._name = name;
+    this._link = link;
     this._templateSelector = templateSelector;
+    this._handleClick = handleClick;
   }
 
   _getPlaceElement() {
@@ -40,10 +38,6 @@ export default class Card {
   }
 
   _setEventListeners() {
-    const imagePopup = new PopupWithImage(this._data, ".popup_type_image");
-
-    imagePopup.setEventListeners();
-
     this._placeLikeButton.addEventListener("click", () => {
       this._likeCard();
     });
@@ -56,7 +50,7 @@ export default class Card {
     //fills the popup with the image clicked
     //and its location, then it reveals the popup
     this._placeImage.addEventListener("click", () => {
-      imagePopup.open();
+      this._handleClick();
     });
   }
 
