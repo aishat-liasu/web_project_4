@@ -78,6 +78,7 @@ export default class FormValidator {
     });
     this._formElement.addEventListener("reset", () => {
       this._fieldList.forEach((fieldElement) => {
+        fieldElement.value = "";
         this._hideFieldError(fieldElement);
       });
       this._toggleButtonState();
@@ -85,7 +86,6 @@ export default class FormValidator {
   }
 
   enableValidation() {
-    this._formElement.addEventListener("submit", (evt) => evt.preventDefault());
     this._setEventListeners();
   }
 }
