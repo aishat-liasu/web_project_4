@@ -26,13 +26,17 @@ const cardList = new Section(
   ".places"
 );
 
-const createCard = (item) => {
+const imagePopup = new PopupWithImage(".popup_type_image");
+
+const getCard = (item) => {
   const card = new Card(item, "#place-template", () => {
-    const imagePopup = new PopupWithImage(".popup_type_image");
-    imagePopup.setEventListeners();
     imagePopup.open(item);
   });
-  const cardElement = card.generateCard();
+  return card.generateCard();
+};
+
+const createCard = (item) => {
+  const cardElement = getCard(item);
   cardList.addItem(cardElement);
 };
 
@@ -70,6 +74,7 @@ const popupEdit = new PopupWithForm((item) => {
 
 popupAdd.setEventListeners();
 popupEdit.setEventListeners();
+imagePopup.setEventListeners();
 
 profileEditButton.addEventListener("click", function () {
   popupEdit.open();

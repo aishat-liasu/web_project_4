@@ -13,7 +13,6 @@ export default class UserInfo {
   }
   //add new data to the page
   setUserInfo({ profileName, profileJob }) {
-    console.log(profileName, profileJob);
     this._nameElement.textContent = profileName;
     this._jobElement.textContent = profileJob;
   }
