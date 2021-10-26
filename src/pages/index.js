@@ -10,10 +10,6 @@ import {
   initialCards,
   profileAddButton,
   profileEditButton,
-  popupFieldPlaceImageURL,
-  popupFieldPlaceTitle,
-  popupImage,
-  popupImageLocation,
   popupFieldTitle,
   popupFieldSubtitle,
 } from "../scripts/utils/constants.js";
@@ -30,15 +26,15 @@ const cardList = new Section(
   ".places"
 );
 
-function createCard(item) {
+const createCard = (item) => {
   const card = new Card(item, "#place-template", () => {
-    const imagePopup = new PopupWithImage(item, ".popup_type_image");
+    const imagePopup = new PopupWithImage(".popup_type_image");
     imagePopup.setEventListeners();
-    imagePopup.open(popupImage, popupImageLocation);
+    imagePopup.open(item);
   });
   const cardElement = card.generateCard();
   cardList.addItem(cardElement);
-}
+};
 
 cardList.renderItems();
 
@@ -64,15 +60,12 @@ const userInfo = new UserInfo({
   jobSelector: ".profile__subtitle",
 });
 
-const popupAdd = new PopupWithForm(() => {
-  createCard({
-    name: popupFieldPlaceTitle.value,
-    link: popupFieldPlaceImageURL.value,
-  });
+const popupAdd = new PopupWithForm((item) => {
+  createCard({ name: item.placeName, link: item.placeImageURL });
 }, ".popup_type_add");
 
-const popupEdit = new PopupWithForm(() => {
-  userInfo.setUserInfo(popupFieldTitle, popupFieldSubtitle);
+const popupEdit = new PopupWithForm((item) => {
+  userInfo.setUserInfo(item);
 }, ".popup_type_edit");
 
 popupAdd.setEventListeners();
@@ -80,7 +73,10 @@ popupEdit.setEventListeners();
 
 profileEditButton.addEventListener("click", function () {
   popupEdit.open();
-  userInfo.getUserInfo();
+
+  const { name, job } = userInfo.getUserInfo();
+  popupFieldTitle.value = name;
+  popupFieldSubtitle.value = job;
 });
 
 profileAddButton.addEventListener("click", function () {
