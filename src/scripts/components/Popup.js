@@ -23,10 +23,10 @@ export default class Popup {
     this._addEventToDocument();
   }
 
-  close = () => {
+  close() {
     this._popupElement.classList.remove("popup_opened");
     this._removeEventFromDocument();
-  };
+  }
 
   _handleClickOutsidePopup = (evt) => {
     if (evt.target.classList.contains("popup_opened")) {
@@ -38,6 +38,6 @@ export default class Popup {
 
     this._popupElement
       .querySelector(".popup__close-button")
-      .addEventListener("click", this.close);
+      .addEventListener("click", () => this.close());
   }
 }
