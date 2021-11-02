@@ -1,0 +1,7 @@
+.place__love-section {
+  color: #000;
+  text-align: center;
+  grid-area: love;
+  align-self: center;
+  padding-right: 18px;
+}
