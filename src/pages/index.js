@@ -10,7 +10,6 @@ import UserInfo from "../scripts/components/UserInfo.js";
 import Api from "../scripts/components/Api.js";
 
 import {
-  initialCards,
   profileAddButton,
   profileEditButton,
   popupFieldTitle,
@@ -27,8 +26,27 @@ const api = new Api({
   },
 });
 
-const userDetails = api.getUserInfo();
-api.getInitialCards();
+let userDetails = [];
+let initialCards = [];
+api
+  .getUserInfo()
+  .then((result) => {
+    console.log(result);
+    userDetails = result;
+  })
+  .catch((err) => {
+    console.log(err); // log the error to the console
+  });
+
+api
+  .getInitialCards()
+  .then((result) => {
+    console.log(result);
+    initialCards = result;
+  })
+  .catch((err) => {
+    console.log(err); // log the error to the console
+  });
 
 const cardList = new Section(
   {
