@@ -10,7 +10,7 @@ There is the list of features that are enabled on the page:
 - Editing user profile
 - Adding new places
 - Deleting places
-- Liking a place
+- Liking and unliking a place
 - Clicking of image to show full view
 
 
