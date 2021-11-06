@@ -21,6 +21,10 @@ export const profileEditButton = document.querySelector(
   ".profile__edit-button"
 );
 
+export const popupConfirmSubmitButton = document.querySelector(
+  ".popup_type_confirm .popup__submit-button"
+);
+
 export const initialCards = [
   {
     name: "Yosemite Valley",
