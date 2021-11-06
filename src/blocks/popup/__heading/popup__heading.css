@@ -5,3 +5,7 @@
   line-height: 29px;
   color: #000;
 }
+
+.popup_type_confirm .popup__heading {
+  margin-bottom: 8px;
+}
