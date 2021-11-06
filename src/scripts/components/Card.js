@@ -1,9 +1,24 @@
 export default class Card {
-  constructor({ name, link }, templateSelector, handleClick) {
-    this._name = name;
-    this._link = link;
+  constructor(
+    data,
+    templateSelector,
+    handleClick,
+    handleDelete,
+    likeCard,
+    unlikeCard,
+    userId
+  ) {
+    this._name = data.name;
+    this._link = data.link;
+    this._likes = data.likes;
+    this._cardId = data._id;
+    this._owner = data.owner;
+    this._userId = userId;
     this._templateSelector = templateSelector;
     this._handleClick = handleClick;
+    this._handleDelete = handleDelete;
+    this._handleLikeCard = likeCard;
+    this._handleUnlikeCard = unlikeCard;
   }
 
   _getPlaceElement() {
@@ -19,20 +34,42 @@ export default class Card {
     this._placeTitle = this._place.querySelector(".place__title");
     this._placeImage = this._place.querySelector(".place__image");
     this._placeLikeButton = this._place.querySelector(".place__love-button");
+    this._placeLikeCount = this._place.querySelector(".place__love-count");
     this._placeDeleteButton = this._place.querySelector(
       ".place__delete-button"
     );
 
+    if (this._owner._id !== this._userId) {
+      this._placeDeleteButton.classList.add("hidden");
+    }
+
+    console.log(this._likes.some((item) => item._id === this._userId));
+    if (this._likes.some((item) => item._id === this._userId)) {
+      this._placeLikeButton.classList.add("place__love-button_active");
+    }
+    this._placeLikeCount.textContent = this._likes.length;
     this._placeTitle.textContent = this._name;
     this._placeImage.src = this._link;
     this._placeImage.alt = `${this._name} picture`;
   }
 
   _likeCard() {
-    this._placeLikeButton.classList.toggle("place__love-button_active");
+    console.log(
+      this._placeLikeButton.classList.contains("place__love-button_active")
+    );
+    if (this._placeLikeButton.classList.contains("place__love-button_active")) {
+      this._handleUnlikeCard(this._cardId);
+      this._placeLikeButton.classList.remove("place__love-button_active");
+      this._placeLikeCount.textContent = this._likes.length - 1;
+    } else {
+      this._handleLikeCard(this._cardId);
+      this._placeLikeButton.classList.add("place__love-button_active");
+      this._placeLikeCount.textContent = this._likes.length + 1;
+    }
   }
 
   _deleteCard() {
+    this._handleDelete(this._cardId);
     const placeToBeDeleted = this._placeDeleteButton.closest(".place");
     placeToBeDeleted.remove();
   }
@@ -42,9 +79,9 @@ export default class Card {
       this._likeCard();
     });
 
-    //deletes the card when its delete icon is clicked
+    //shows the confirm popup when its delete icon is clicked
     this._placeDeleteButton.addEventListener("click", () => {
-      this._deleteCard();
+      this._handleDelete(this._cardId);
     });
 
     //fills the popup with the image clicked
