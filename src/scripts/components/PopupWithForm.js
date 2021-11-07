@@ -18,10 +18,20 @@ export default class PopupWithForm extends Popup {
       .forEach((input) => (this._formValues[input.name] = input.value));
   }
 
+  _onUpload = () => {
+    this.submitButton = this._popupForm.querySelector(".popup__submit-button");
+    this.submitButton.textContent = "Saving...";
+  };
+
+  _afterUpload = () => {
+    this.submitButton.textContent = "Save";
+  };
+
   _handleSubmitEvent = (e) => {
     e.preventDefault();
     this._getInputValues();
-    this._callback(this._formValues);
+
+    this._callback(this._formValues, this._onUpload, this._afterUpload);
     this.close();
   };
 
