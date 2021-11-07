@@ -54,22 +54,10 @@ export default class Card {
 
   _likeCard() {
     if (this._placeLikeButton.classList.contains("place__love-button_active")) {
-      this._handleUnlikeCard(this._cardId)
-        .then((result) => {
-          this._placeLikeCount.textContent = result.likes.length;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this._handleUnlikeCard(this._cardId, this._placeLikeCount);
       this._placeLikeButton.classList.remove("place__love-button_active");
     } else {
-      this._handleLikeCard(this._cardId)
-        .then((result) => {
-          this._placeLikeCount.textContent = result.likes.length;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this._handleLikeCard(this._cardId, this._placeLikeCount);
       this._placeLikeButton.classList.add("place__love-button_active");
     }
   }
