@@ -42,12 +42,12 @@ export default class Api {
     });
   }
 
-  updateUserAvatar(url) {
+  updateUserAvatar(item) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        avatar: url,
+        avatar: item.profilePictureURL,
       }),
     }).then((res) => {
       if (res.ok) {
