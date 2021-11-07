@@ -44,42 +44,7 @@ function setUserDetails({ name, about, avatar }) {
 }
 
 let userId = "";
-api
-  .getUserInfo()
-  .then((result) => {
-    console.log(result);
-    setUserDetails(result);
-    userId = result._id;
-  })
-  .catch((err) => {
-    console.log(err); // log the error to the console
-  });
-
-let initialCards = [];
 let cardList = "";
-
-api
-  .getInitialCards()
-  .then((result) => {
-    console.log(result);
-    initialCards = result;
-    cardList = new Section(
-      {
-        items: result,
-        renderer: (item) => {
-          createCard(item);
-        },
-      },
-      ".places"
-    );
-
-    if (userId) {
-      cardList.renderItems();
-    }
-  })
-  .catch((err) => {
-    console.log(err); // log the error to the console
-  });
 
 const getCard = (item) => {
   const card = new Card({
@@ -132,6 +97,29 @@ const createCard = (item) => {
   const cardElement = getCard(item);
   cardList.addItem(cardElement);
 };
+
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then((result) => {
+    console.log(result);
+    setUserDetails(result[0]);
+    userId = result[0]._id;
+    cardList = new Section(
+      {
+        items: result[1],
+        renderer: (item) => {
+          createCard(item);
+        },
+      },
+      ".places"
+    );
+
+    if (userId) {
+      cardList.renderItems();
+    }
+  })
+  .catch((err) => {
+    console.log(err); // log the error to the console
+  });
 
 const imagePopup = new PopupWithImage(".popup_type_image");
 
