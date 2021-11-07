@@ -14,14 +14,17 @@ import {
   popupFieldSubtitle,
   popupConfirmSubmitButton,
   profileOverlay,
+  profileTitleSelector,
+  profileSubtitleSelector,
+  profileAvatarSelector,
 } from "../scripts/utils/constants.js";
 
 import "./index.css";
 
 const userInfo = new UserInfo({
-  nameSelector: ".profile__title",
-  jobSelector: ".profile__subtitle",
-  avatarSelector: ".profile__avatar",
+  nameSelector: profileTitleSelector,
+  jobSelector: profileSubtitleSelector,
+  avatarSelector: profileAvatarSelector,
 });
 
 const api = new Api({
@@ -52,16 +55,17 @@ api
     console.log(err); // log the error to the console
   });
 
+let initialCards = [];
 let cardList = "";
 
 api
   .getInitialCards()
   .then((result) => {
     console.log(result);
-    const initialCards = result;
+    initialCards = result;
     cardList = new Section(
       {
-        items: initialCards,
+        items: result,
         renderer: (item) => {
           createCard(item);
         },
@@ -69,7 +73,9 @@ api
       ".places"
     );
 
-    cardList.renderItems();
+    if (userId) {
+      cardList.renderItems();
+    }
   })
   .catch((err) => {
     console.log(err); // log the error to the console
@@ -97,11 +103,25 @@ const getCard = (item) => {
         popupConfirm.close();
       });
     },
-    likeCard: (cardId) => {
-      return api.likeCard(cardId);
+    likeCard: (cardId, placeLikeCount) => {
+      api
+        .likeCard(cardId)
+        .then((result) => {
+          placeLikeCount.textContent = result.likes.length;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    unlikeCard: (cardId) => {
-      return api.unlikeCard(cardId);
+    unlikeCard: (cardId, placeLikeCount) => {
+      api
+        .unlikeCard(cardId)
+        .then((result) => {
+          placeLikeCount.textContent = result.likes.length;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     userId,
   });
@@ -132,13 +152,13 @@ popupFormList.forEach((formElement) => {
   formToBeValidated.enableValidation();
 });
 
-const popupAdd = new PopupWithForm((item, onUpload, afterUpload) => {
+const popupAddPlace = new PopupWithForm((item, onUpload, afterUpload) => {
   onUpload();
   api
     .uploadPlace({ name: item.placeName, link: item.placeImageURL })
     .then((result) => {
-      //console.log(result);
       createCard(result);
+      popupAddPlace.close();
     })
     .catch((err) => {
       console.log(err);
@@ -148,13 +168,13 @@ const popupAdd = new PopupWithForm((item, onUpload, afterUpload) => {
     });
 }, ".popup_type_add");
 
-const popupEdit = new PopupWithForm((item, onUpload, afterUpload) => {
+const popupEditProfile = new PopupWithForm((item, onUpload, afterUpload) => {
   onUpload();
   api
     .updateUserInfo(item)
     .then((result) => {
-      //console.log(result);
       setUserDetails(result);
+      popupEditProfile.close();
     })
     .catch((err) => {
       console.log(err);
@@ -164,13 +184,14 @@ const popupEdit = new PopupWithForm((item, onUpload, afterUpload) => {
     });
 }, ".popup_type_edit");
 
-const popupChange = new PopupWithForm((item, onUpload, afterUpload) => {
+const popupUpdateAvatar = new PopupWithForm((item, onUpload, afterUpload) => {
   onUpload();
   api
     .updateUserAvatar(item)
     .then((result) => {
-      console.log(result);
+      //console.log(result);
       setUserDetails(result);
+      popupUpdateAvatar.close();
     })
     .catch((err) => {
       console.log(err); // log the error to the console
@@ -182,14 +203,14 @@ const popupChange = new PopupWithForm((item, onUpload, afterUpload) => {
 
 const popupConfirm = new Popup(".popup_type_confirm");
 
-popupAdd.setEventListeners();
-popupEdit.setEventListeners();
-popupChange.setEventListeners();
+popupAddPlace.setEventListeners();
+popupEditProfile.setEventListeners();
+popupUpdateAvatar.setEventListeners();
 imagePopup.setEventListeners();
 popupConfirm.setEventListeners();
 
 profileEditButton.addEventListener("click", function () {
-  popupEdit.open();
+  popupEditProfile.open();
 
   const { name, job } = userInfo.getUserInfo();
   popupFieldTitle.value = name;
@@ -197,9 +218,9 @@ profileEditButton.addEventListener("click", function () {
 });
 
 profileAddButton.addEventListener("click", function () {
-  popupAdd.open();
+  popupAddPlace.open();
 });
 
 profileOverlay.addEventListener("click", function () {
-  popupChange.open();
+  popupUpdateAvatar.open();
 });
