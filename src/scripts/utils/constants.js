@@ -25,6 +25,8 @@ export const popupConfirmSubmitButton = document.querySelector(
   ".popup_type_confirm .popup__submit-button"
 );
 
+export const profileOverlay = document.querySelector(".profile__overlay");
+
 export const initialCards = [
   {
     name: "Yosemite Valley",
