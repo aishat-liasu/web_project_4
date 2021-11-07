@@ -1,3 +1,7 @@
+export const profileTitleSelector = ".profile__title";
+export const profileSubtitleSelector = ".profile__subtitle";
+export const profileAvatarSelector = ".profile__avatar";
+
 export const popupFieldTitle = document.querySelector(".popup__field_el_title");
 export const popupFieldSubtitle = document.querySelector(
   ".popup__field_el_subtitle"
