@@ -1,13 +1,13 @@
 export default class Card {
-  constructor(
+  constructor({
     data,
     templateSelector,
     handleClick,
     handleDelete,
     likeCard,
     unlikeCard,
-    userId
-  ) {
+    userId,
+  }) {
     this._name = data.name;
     this._link = data.link;
     this._likes = data.likes;
@@ -43,7 +43,6 @@ export default class Card {
       this._placeDeleteButton.classList.add("hidden");
     }
 
-    console.log(this._likes.some((item) => item._id === this._userId));
     if (this._likes.some((item) => item._id === this._userId)) {
       this._placeLikeButton.classList.add("place__love-button_active");
     }
@@ -54,25 +53,31 @@ export default class Card {
   }
 
   _likeCard() {
-    console.log(
-      this._placeLikeButton.classList.contains("place__love-button_active")
-    );
     if (this._placeLikeButton.classList.contains("place__love-button_active")) {
-      this._handleUnlikeCard(this._cardId);
+      this._handleUnlikeCard(this._cardId)
+        .then((result) => {
+          this._placeLikeCount.textContent = result.likes.length;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       this._placeLikeButton.classList.remove("place__love-button_active");
-      this._placeLikeCount.textContent = this._likes.length - 1;
     } else {
-      this._handleLikeCard(this._cardId);
+      this._handleLikeCard(this._cardId)
+        .then((result) => {
+          this._placeLikeCount.textContent = result.likes.length;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       this._placeLikeButton.classList.add("place__love-button_active");
-      this._placeLikeCount.textContent = this._likes.length + 1;
     }
   }
 
-  _deleteCard() {
-    this._handleDelete(this._cardId);
+  _removeCard = () => {
     const placeToBeDeleted = this._placeDeleteButton.closest(".place");
     placeToBeDeleted.remove();
-  }
+  };
 
   _setEventListeners() {
     this._placeLikeButton.addEventListener("click", () => {
@@ -81,7 +86,7 @@ export default class Card {
 
     //shows the confirm popup when its delete icon is clicked
     this._placeDeleteButton.addEventListener("click", () => {
-      this._handleDelete(this._cardId);
+      this._handleDelete(this._cardId, this._removeCard);
     });
 
     //fills the popup with the image clicked
