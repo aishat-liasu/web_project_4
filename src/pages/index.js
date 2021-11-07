@@ -13,6 +13,7 @@ import {
   popupFieldTitle,
   popupFieldSubtitle,
   popupConfirmSubmitButton,
+  profileOverlay,
 } from "../scripts/utils/constants.js";
 
 import "./index.css";
@@ -31,8 +32,7 @@ const api = new Api({
   },
 });
 
-function setUserDetails(item) {
-  const { name, about, avatar } = item;
+function setUserDetails({ name, about, avatar }) {
   userInfo.setUserInfo({
     profileName: name,
     profileJob: about,
@@ -76,22 +76,20 @@ api
   });
 
 const getCard = (item) => {
-  const card = new Card(
-    item,
-    "#place-template",
-    () => {
+  const card = new Card({
+    data: item,
+    templateSelector: "#place-template",
+    handleClick: () => {
       imagePopup.open(item);
     },
-    (cardId) => {
+    handleDelete: (cardId, removeCard) => {
       popupConfirm.open();
       popupConfirmSubmitButton.addEventListener("click", (e) => {
         e.preventDefault();
-
         api
           .deleteCard(cardId)
-          .then((result) => {
-            console.log(result);
-            cardList.renderItems();
+          .then(() => {
+            removeCard();
           })
           .catch((err) => {
             console.log(err); // log the error to the console
@@ -99,28 +97,14 @@ const getCard = (item) => {
         popupConfirm.close();
       });
     },
-    (cardId) => {
-      api
-        .likeCard(cardId)
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((err) => {
-          console.log(err); // log the error to the console
-        });
+    likeCard: (cardId) => {
+      return api.likeCard(cardId);
     },
-    (cardId) => {
-      api
-        .unlikeCard(cardId)
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((err) => {
-          console.log(err); // log the error to the console
-        });
+    unlikeCard: (cardId) => {
+      return api.unlikeCard(cardId);
     },
-    userId
-  );
+    userId,
+  });
   return card.generateCard();
 };
 
@@ -148,34 +132,59 @@ popupFormList.forEach((formElement) => {
   formToBeValidated.enableValidation();
 });
 
-const popupAdd = new PopupWithForm((item) => {
+const popupAdd = new PopupWithForm((item, onUpload, afterUpload) => {
+  onUpload();
   api
     .uploadPlace({ name: item.placeName, link: item.placeImageURL })
     .then((result) => {
-      console.log(result);
+      //console.log(result);
       createCard(result);
     })
     .catch((err) => {
-      console.log(err); // log the error to the console
+      console.log(err);
+    })
+    .finally(() => {
+      afterUpload();
     });
 }, ".popup_type_add");
 
-const popupEdit = new PopupWithForm((item) => {
+const popupEdit = new PopupWithForm((item, onUpload, afterUpload) => {
+  onUpload();
   api
     .updateUserInfo(item)
+    .then((result) => {
+      //console.log(result);
+      setUserDetails(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      afterUpload();
+    });
+}, ".popup_type_edit");
+
+const popupChange = new PopupWithForm((item, onUpload, afterUpload) => {
+  onUpload();
+  api
+    .updateUserAvatar(item)
     .then((result) => {
       console.log(result);
       setUserDetails(result);
     })
     .catch((err) => {
       console.log(err); // log the error to the console
+    })
+    .finally(() => {
+      afterUpload();
     });
-}, ".popup_type_edit");
+}, ".popup_type_change");
 
 const popupConfirm = new Popup(".popup_type_confirm");
 
 popupAdd.setEventListeners();
 popupEdit.setEventListeners();
+popupChange.setEventListeners();
 imagePopup.setEventListeners();
 popupConfirm.setEventListeners();
 
@@ -189,4 +198,8 @@ profileEditButton.addEventListener("click", function () {
 
 profileAddButton.addEventListener("click", function () {
   popupAdd.open();
+});
+
+profileOverlay.addEventListener("click", function () {
+  popupChange.open();
 });
