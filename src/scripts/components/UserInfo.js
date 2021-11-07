@@ -14,8 +14,10 @@ export default class UserInfo {
   }
   //add new data to the page
   setUserInfo({ profileName, profileJob, profileAvatar }) {
-    this._nameElement.textContent = profileName;
-    this._jobElement.textContent = profileJob;
-    this._avatarElement.style.backgroundImage = `url(${profileAvatar})`;
+    if (profileName && profileJob && profileAvatar) {
+      this._nameElement.textContent = profileName;
+      this._jobElement.textContent = profileJob;
+      this._avatarElement.style.backgroundImage = `url(${profileAvatar})`;
+    }
   }
 }
