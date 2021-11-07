@@ -67,13 +67,32 @@
       </form>
     </section>
 
+    <section class="popup popup_type_change" id="popup_type_change">
+      <form class="popup__form" id="popup__form_type_change" novalidate>
+        <button type="reset" class="popup__close-button" aria-label="close">
+        </button>
+        <h2 class="popup__heading">Change profile picture</h2>
+        <label class="popup__label">
+          <input type="url" name="profilePictureURL" id="profile-picture-url"
+            class="popup__field popup__field_el_profile-picture-url" placeholder="Image URL" required>
+          <span class="popup__field-error" id="profile-picture-url-error"></span>
+        </label>
+        <button type="submit" class="popup__submit-button">Save</button>
+      </form>
+    </section>
+
     <header class="header">
       <div class="logo"></div>
     </header>
     <main class="main">
       <section class="profile">
         <div class="profile__content">
-          <img src="<%=require('./images/profile-pic.jpg')%>" alt="profile picture" class="profile__avatar">
+          <div class="profile__avatar">
+            <div class="profile__overlay">
+
+            </div>
+          </div>
+          <!--   <img src="<%=require('./images/profile-pic.jpg')%>" alt="profile picture" class="profile__avatar"> -->
           <div class="profile__info">
             <div class="profile__title-edit">
               <h1 class="profile__title">Jacques Cousteau</h1>
