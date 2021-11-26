@@ -19,6 +19,6 @@ There is the list of features that are enabled on the page:
 - The images were optimized using [tinypng](https://tinypng.com/)
 - The mockup was gotten from [here](https://www.figma.com/file/SurN1jaeEQIhuZEDMhmWWf/Sprint-4-Around-The-U.S.-desktop-mobile?node-id=0%3A1)
 
-Check the live site [here](https://arike-liasu.github.io/web_project_4/index.html)
+Check the live site [here](https://aishat-liasu.github.io/web_project_4/index.html)
 
 
